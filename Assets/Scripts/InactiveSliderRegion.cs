@@ -4,27 +4,66 @@ using UnityEngine;
 using TMPro;
 public class InactiveSliderRegion : MonoBehaviour
 {
-    public TextMeshProUGUI hitScore;
-    public Smileys smileys;
+    public enum SliderRegion {
+        Left,
+        Right
+    }
 
+    public SliderRegion sliderRegion;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == GlobalHelper.sliderLayer)
         {
-            HorizontalSlider sliderInstance = collision.GetComponent<HorizontalSlider>();
-            if (sliderInstance != null)
+            SliderInterface sliderInterface = collision.gameObject.GetComponent<SliderInterface>();
+
+
+            if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.RightSlider && sliderRegion == SliderRegion.Right)
             {
-                sliderInstance.can_click = false;
-                if(sliderInstance.nextSlider != null)
+              
+                
+                sliderInterface.can_click = false;
+                sliderInterface.is_active = false;
+                if (sliderInterface.nextSlider != null)
                 {
-                    sliderInstance.nextSlider.is_active = true;
+                    sliderInterface.nextSlider.is_active = true;
                 }
-             
-                hitScore.text = "MISS";
-                smileys.ActivateSmiley(Smiley.Angry);
+
+                GlobalHelper.global.scoreManager.combo = 0;
+                GlobalHelper.global.hitScoreText.text = "FAIL";
+                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+
+                sliderInterface.Darken();
+
+               // Destroy(collision.gameObject);
             }
+            else if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.LeftSlider && sliderRegion == SliderRegion.Left)
+            {
+
+                sliderInterface.can_click = false;
+                sliderInterface.is_active = false;
+                if (sliderInterface.nextSlider != null)
+                {
+                    sliderInterface.nextSlider.is_active = true;
+                }
+
+                GlobalHelper.global.scoreManager.combo = 0;
+                GlobalHelper.global.hitScoreText.text = "FAIL";
+                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+                sliderInterface.Darken();
+
+                //  Destroy(collision.gameObject);
+            }
+
+
+
+
         }
+     
+
+
+
+
     }
 
 }

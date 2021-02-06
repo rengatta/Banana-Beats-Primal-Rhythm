@@ -17,8 +17,8 @@ TagManager:
   - InactiveSliderRegion
   - PerfectRegion
   - GoodRegion
-  - 
-  - 
+  - LeftSlider
+  - HoldSlider
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: RightSlider
+    uniqueID: 98697657
+    locked: 0
+  - name: LeftSlider
+    uniqueID: 999290683
     locked: 0

@@ -4,39 +4,76 @@ using UnityEngine;
 using TMPro;
 public class SliderManager : MonoBehaviour
 {
-    public GameObject sliderPrefab;
+    public GameObject rightSliderPrefab;
+    public GameObject leftSliderPrefab;
+    public GameObject rightHoldSliderPrefab;
 
     public float test_spawn_rate = 1f;
-
     public float test_slider_speed = 7f;
 
-    public Transform slider_spawn_area;
-
-    public TextMeshProUGUI hitScoreText;
-
-    public Smileys smileys;
+    public Transform sliderSpawnArea;
+    public Transform leftSliderSpawnArea;
 
     IEnumerator TestSpawner() {
         //WaitForSeconds spawnWfs = new WaitForSeconds(test_spawn_rate);
-        HorizontalSlider previousSliderScript = null;
-        while(true) {
+        SliderInterface previousSliderScriptRight = null;
+        SliderInterface previousSliderScriptLeft = null;
+        while (true) {
 
-            GameObject sliderInstance = Instantiate(sliderPrefab);
-            sliderInstance.transform.position = slider_spawn_area.position;
+            {
+                GameObject sliderInstance = Instantiate(rightHoldSliderPrefab);
+                sliderInstance.transform.position = sliderSpawnArea.position;
 
-            HorizontalSlider sliderScript = sliderInstance.GetComponent<HorizontalSlider>();
-            sliderScript.hitScoreText = this.hitScoreText;
-            sliderScript.horizontal_speed = test_slider_speed;
-            sliderScript.smileys = this.smileys;
+                SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
+                sliderScript.horizontal_speed = test_slider_speed;
 
-            if(previousSliderScript == null) {
-                sliderScript.is_active = true;
-            } else {
-                previousSliderScript.nextSlider = sliderScript;
+                if (previousSliderScriptRight == null || previousSliderScriptRight.Equals(null))
+                {
+                    sliderScript.is_active = true;
+                }
+                else if(previousSliderScriptRight != null && !previousSliderScriptRight.is_active )
+                {
+                    sliderScript.is_active = true;
+
+                } else {
+                    previousSliderScriptRight.nextSlider = sliderScript;
+                }
+
+
+                previousSliderScriptRight = sliderScript;
+
+                yield return new WaitForSeconds(test_spawn_rate);
             }
-            previousSliderScript = sliderScript;
 
-            yield return new WaitForSeconds(test_spawn_rate);
+            {
+                GameObject sliderInstance = Instantiate(leftSliderPrefab);
+                sliderInstance.transform.position = leftSliderSpawnArea.position;
+
+                SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
+                sliderScript.horizontal_speed = test_slider_speed;
+
+            
+                if (previousSliderScriptLeft == null || previousSliderScriptLeft.Equals(null))
+                {
+                    sliderScript.is_active = true;
+                }
+                else if (previousSliderScriptLeft != null && !previousSliderScriptLeft.is_active)
+                {
+                    sliderScript.is_active = true;
+
+                }
+                else
+                {
+                    previousSliderScriptRight.nextSlider = sliderScript;
+                }
+
+                previousSliderScriptLeft = sliderScript;
+                yield return new WaitForSeconds(test_spawn_rate);
+
+
+
+            }
+
         }
 
     }

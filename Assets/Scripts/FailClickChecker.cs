@@ -5,10 +5,10 @@ using TMPro;
 
 public class FailClickChecker : MonoBehaviour
 {
+    //actually checks for a "MISS"
 
     public BoxCollider2D boxCollider;
-    public TextMeshProUGUI hitScoreText;
-    public Smileys smileys;
+
     void Start()
     {
         boxCollider.enabled = false;
@@ -17,16 +17,47 @@ public class FailClickChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
+
+        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.L)) {
             boxCollider.enabled = true;
-            
-            RaycastHit2D m_Hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.up);
-            if (m_Hit)
+
+            int layerMask = ((1 << GlobalHelper.sliderLayer));
+            RaycastHit2D m_Hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.up, 0f, layerMask);
+
+
+            if (!m_Hit)
             {
-                hitScoreText.text = "FAIL";
-                smileys.ActivateSmiley(Smiley.Meh);
+                GlobalHelper.global.hitScoreText.text = "MISS";
+                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+            } else {
+                if (m_Hit.collider.gameObject.layer == GlobalHelper.sliderLayer)
+                {
+
+                    SliderInterface sliderInterface = m_Hit.collider.gameObject.GetComponent<SliderInterface>();
+
+                    if (sliderInterface != null)
+                    {
+
+                        if (sliderInterface.sliderType == SliderType.RightSlider && Input.GetKeyDown(KeyCode.A))
+                        {
+                            //GlobalHelper.global.scoreManager.combo = 0;
+                            GlobalHelper.global.hitScoreText.text = "MISS";
+                            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+                        }
+                        else if (sliderInterface.sliderType == SliderType.LeftSlider && Input.GetKeyDown(KeyCode.L))
+                        {
+                            //GlobalHelper.global.scoreManager.combo = 0;
+                            GlobalHelper.global.hitScoreText.text = "MISS";
+                            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+                        }
+                    }
+
+                }
             }
+
+
         }
+
     }
 
 
