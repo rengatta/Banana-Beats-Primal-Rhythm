@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum SliderType {
+public enum SliderType
+{
     LeftSlider,
     RightSlider
 }
 
-public interface SliderInterface {
+public interface SliderInterface
+{
     SliderType sliderType { get; set; }
     bool can_click { get; set; }
     SliderInterface nextSlider { get; set; }
@@ -22,7 +24,7 @@ public interface SliderInterface {
 }
 
 
-public class LeftSlider : MonoBehaviour, SliderInterface
+public class RegularSlider : MonoBehaviour, SliderInterface
 {
 
     [HideInInspector]
@@ -48,12 +50,16 @@ public class LeftSlider : MonoBehaviour, SliderInterface
     private SliderType _sliderType;
 
 
-    Vector3 direction = Vector3.right;
+    public Vector3 direction = Vector3.right;
 
 
     public SpriteRenderer spriteRenderer;
 
-    public void Darken() {
+    public KeyCode clickKey;
+
+
+    public void Darken()
+    {
         Color tempColor = Color.black;
         tempColor.a = 0.4f;
         spriteRenderer.color = tempColor;
@@ -76,14 +82,14 @@ public class LeftSlider : MonoBehaviour, SliderInterface
         {
             nextSlider.is_active = true;
         }
-       Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 
     void Update()
     {
         this.transform.position += (direction * horizontal_speed * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.A) && can_click && is_active)
+        if (Input.GetKeyDown(clickKey) && can_click && is_active)
         {
             if (hitScore == HitScore.Perfect)
             {
@@ -111,7 +117,7 @@ public class LeftSlider : MonoBehaviour, SliderInterface
     {
         if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer)
         {
-            
+
             hitScore = HitScore.Perfect;
             can_click = true;
 

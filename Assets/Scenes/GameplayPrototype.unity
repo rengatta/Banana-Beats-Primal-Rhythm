@@ -903,7 +903,6 @@ GameObject:
   m_Component:
   - component: {fileID: 730073540}
   - component: {fileID: 730073539}
-  - component: {fileID: 730073541}
   m_Layer: 7
   m_Name: white_triangle
   m_TagString: Untagged
@@ -982,18 +981,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &730073541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730073538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9f079e5a80ad64c83401eff56997ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &756602292
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,8 +2340,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightSliderPrefab: {fileID: 6171854046334477036, guid: 7627498e8c71f4b409be831703d2aa55, type: 3}
   leftSliderPrefab: {fileID: 785867024226391152, guid: 508d88be9bc49064aab646f7df70a280, type: 3}
-  rightHoldSliderPrefab: {fileID: 4387848438917197870, guid: 02123b314714a904b9ac9f0bd191893e, type: 3}
-  test_spawn_rate: 1
+  leftHoldSliderPrefab: {fileID: 4387848438917197870, guid: 02123b314714a904b9ac9f0bd191893e, type: 3}
+  rightHoldSliderPrefab: {fileID: 4387848438917197870, guid: 6ef6370a4e2a4a54da97379697058e8d, type: 3}
+  test_spawn_rate: 1.5
   test_slider_speed: 6
   sliderSpawnArea: {fileID: 1455176669}
   leftSliderSpawnArea: {fileID: 1184019441}

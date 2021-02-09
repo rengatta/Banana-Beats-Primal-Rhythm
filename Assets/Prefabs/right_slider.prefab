@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6171854046334477026}
   - component: {fileID: 6171854046334477037}
   - component: {fileID: 6171854046334477024}
-  - component: {fileID: -8800141615574769628}
+  - component: {fileID: 5588593551808137051}
   m_Layer: 6
   m_Name: right_slider
   m_TagString: Untagged
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-8800141615574769628
+--- !u!114 &5588593551808137051
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6171854046334477036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf3f81873de533f46935c3a28d6ca4e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 53baaed03f137294cb6f1f265ecc4b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sliderType: 1
+  direction: {x: -1, y: 0, z: 0}
   spriteRenderer: {fileID: 6171854046334477037}
+  clickKey: 108

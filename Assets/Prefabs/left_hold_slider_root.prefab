@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8038872326623747151}
   - component: {fileID: 6430294539449457431}
   m_Layer: 13
-  m_Name: right_hold_slider_root
+  m_Name: left_hold_slider_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8038872326623747148}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.007694248, y: 0, z: 0}
+  m_LocalPosition: {x: 0.16498187, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8038872328144989347}
@@ -40,8 +40,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8038872326623747148}
   m_Enabled: 1
-  m_SortingLayerID: 98697657
-  m_SortingLayer: 1
+  m_SortingLayerID: 999290683
+  m_SortingLayer: 2
   m_SortingOrder: 0
 --- !u!1 &8038872328144989344
 GameObject:
@@ -114,12 +114,12 @@ SpriteMask:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0a9281abadb9ca3478cbfe31a7db0ba2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 09a64dc25b601e246be83548805d37d8, type: 3}
   m_MaskAlphaCutoff: 0.2
-  m_FrontSortingLayerID: 98697657
-  m_BackSortingLayerID: 98697657
-  m_FrontSortingLayer: 1
-  m_BackSortingLayer: 1
+  m_FrontSortingLayerID: 999290683
+  m_BackSortingLayerID: 999290683
+  m_FrontSortingLayer: 2
+  m_BackSortingLayer: 2
   m_FrontSortingOrder: 1
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0

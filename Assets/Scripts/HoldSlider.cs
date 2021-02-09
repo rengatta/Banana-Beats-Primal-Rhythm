@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public enum HitScore
-{
-    Fail,
-    Perfect,
-    Good
-}
 
-public class RightHoldSlider : MonoBehaviour, SliderInterface
+public class HoldSlider : MonoBehaviour, SliderInterface
 {
 
     [HideInInspector]
@@ -31,6 +25,8 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
     public GameObject spriteMaskRoot;
     public float horizontal_speed { get; set; }
 
+    public EndSliderFailBox endSliderFailBoxScript;
+
     //if the slider is over the white triangle
     [HideInInspector]
     public bool can_click { get; set; }
@@ -50,20 +46,33 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
     HitScore hitScore;
 
 
-    Vector3 direction = Vector3.left;
+    public Vector3 direction = Vector3.left;
 
     bool clicked = false;
+    public KeyCode clickKey;
+
+
 
     void Start()
     {
-        start.transform.localPosition += new Vector3(bodySprite.bounds.size.x / 2f, 0f, 0f);
         body.localScale = new Vector3(length, body.localScale.y);
-
         float xSize = bodySprite.bounds.size.x;
-        endSlider.position = new Vector3(start.transform.position.x + xSize, endSlider.position.y, endSlider.position.z);
+
+
+        if (_sliderType == SliderType.RightSlider)
+        {
+            //start.transform.localPosition += new Vector3(bodySprite.bounds.size.x / 2f, 0f, 0f);
+            endSlider.position = new Vector3(start.transform.position.x + xSize, endSlider.position.y, endSlider.position.z);
+        }
+        else if (_sliderType == SliderType.LeftSlider)
+        {
+            //start.transform.localPosition += new Vector3(bodySprite.bounds.size.x / 2f, 0f, 0f);
+            endSlider.position = new Vector3(start.transform.position.x - xSize, endSlider.position.y, endSlider.position.z);
+
+        }
+
+        endSliderCompletion.endSlider = endSlider.gameObject;
     }
-
-
 
 
     public void ActivateNextSlider()
@@ -79,15 +88,16 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
         {
             nextSlider.is_active = true;
         }
-        
+
     }
+
 
     void Update()
     {
         start.transform.position += (direction * horizontal_speed * Time.deltaTime);
 
 
-        if (Input.GetKeyDown(KeyCode.L) && can_click && is_active && !clicked)
+        if (Input.GetKeyDown(clickKey) && can_click && is_active && !clicked)
         {
             clicked = true;
             if (hitScore == HitScore.Perfect)
@@ -96,7 +106,7 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "PERFECT";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-                
+
             }
             else if (hitScore == HitScore.Good)
             {
@@ -115,7 +125,8 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
 
     public float scoreModifier = 0.1f;
 
-    IEnumerator HoldDown() {
+    IEnumerator HoldDown()
+    {
         can_destroy = false;
         //instantiates the sprite mask gameobject and sets it to the parent of this gameobject so that it won't mask any other sprites outside
         GameObject spriteMaskRootInstance = Instantiate(spriteMaskRoot);
@@ -126,16 +137,29 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
 
         //removes the child that contains the box collider so we can detect the end slider later
         endSliderCompletion.gameObject.transform.parent = null;
-  
-        while(true) {
+
+        //deparent the fail box so it stays stationary and is ready to catch the end slider
+        endSliderFailBoxScript.endSlider = endSlider.gameObject;
+        endSliderFailBoxScript.transform.SetParent(null);
+
+        while (true)
+        {
             GlobalHelper.global.scoreManager.score += scoreModifier * Time.deltaTime;
 
             //detects if the player lets go of a hold in order to "catch" the end slider
-            if(Input.GetKeyUp(KeyCode.L)) {
+            if (Input.GetKeyUp(clickKey))
+            {
                 //detach from the sprite mask root since we need the sprite mask to move with the slider now
                 this.transform.parent = null;
                 //makes sure the sprite mask only works on children of the hold slider; SortinGroup component needs to be added to the root parent for this to function
-                gameObject.AddComponent(typeof(SortingGroup)); //as SortingGroup;
+                SortingGroup sortingGroupInstance = gameObject.AddComponent(typeof(SortingGroup)) as SortingGroup;
+
+                if (sliderType == SliderType.RightSlider) {
+                    sortingGroupInstance.sortingLayerName = "RightSlider";
+                } else {
+                    sortingGroupInstance.sortingLayerName = "LeftSlider";
+                }
+
 
                 //parent the sprite mask to the slider so it moves with the slider
                 Transform spriteMaskChild = spriteMaskRootInstance.transform.GetChild(0);
@@ -143,20 +167,28 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
 
                 //destroy the sprite mask's previous root since we don't need it anymore
                 Destroy(spriteMaskRootInstance);
-                
 
                 if (nextSlider != null)
                     nextSlider.is_active = true;
 
                 if (endSliderCompletion.DetectHit())
                 {
+                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
+                    GlobalHelper.global.hitScoreText.text = "PERFECT";
                     GlobalHelper.global.scoreManager.score += 5;
                     GlobalHelper.global.scoreManager.combo += 1;
-                    Destroy(endSliderCompletion.gameObject);
                     Destroy(this.gameObject);
-                } else {
+                }
+                else
+                {
+                   
+                    GlobalHelper.global.hitScoreText.text = "MISS";
+                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
                     GlobalHelper.global.scoreManager.combo = 0;
                 }
+
+                Destroy(endSliderFailBoxScript.gameObject);
+                Destroy(endSliderCompletion.gameObject);
 
                 Darken();
 
@@ -166,9 +198,24 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
         }
     }
 
- 
+    //triggers whenever the end slider enters the fail box
+    public void TriggerFail()
+    {
+        if (nextSlider != null)
+            nextSlider.is_active = true;
 
-    public void Darken() {
+        if(endSliderFailBoxScript != null) Destroy(endSliderFailBoxScript.gameObject);
+        if(endSliderCompletion.gameObject != null) Destroy(endSliderCompletion.gameObject);
+        GlobalHelper.global.hitScoreText.text = "FAIL";
+        GlobalHelper.global.scoreManager.combo = 0;
+        GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+        Destroy(this.gameObject);
+
+    }
+
+
+    public void Darken()
+    {
         float tempAlpha = bodySprite.color.a;
         Color tempColor = Color.black;
         tempColor.a = tempAlpha;
@@ -184,8 +231,6 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
         startSliderSpriteRenderer.color = tempColor;
 
     }
-
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -203,15 +248,6 @@ public class RightHoldSlider : MonoBehaviour, SliderInterface
 
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 }
