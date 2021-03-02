@@ -60,11 +60,44 @@ public class WhiteTriangle : MonoBehaviour
             }
          
         }
-        if(foundleft) {
-            leftScript.DetectHit(); 
+
+
+
+        if (foundleft || foundright)
+        {
+
+            if (foundleft)
+                leftScript.DetectHit();
+            if (foundright)
+                rightScript.DetectHit();
+            if (foundleft && foundright) return;
+
+            if (foundleft)
+            {
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    GlobalHelper.global.hitScoreText.text = "MISS";
+                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+                }
+            }
+            else if (foundright)
+            {
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    GlobalHelper.global.hitScoreText.text = "MISS";
+                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+                }
+
+            }
+
         }
-        if(foundright) {
-            rightScript.DetectHit();
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown(KeyCode.A))
+            {
+                GlobalHelper.global.hitScoreText.text = "MISS";
+                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+            }
         }
 
         

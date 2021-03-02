@@ -22,12 +22,31 @@ public class AudioManager : MonoBehaviour
     public float mouseWheelSpeed = 0.2f;
     public bool playtestPaused = false;
     public Slider volumeSlider;
-
+    public Slider timeScaleSlider;
 
     public void OnVolumeChanged()
     {
         audioSource.volume = volumeSlider.value;
 
+    }
+
+
+    public void ChangeTimescale()
+    {
+        audioSource.Pause();
+        Time.timeScale = timeScaleSlider.value;
+        audioSource.pitch = Time.timeScale;
+        if (songPaused != true)
+            audioSource.UnPause();
+    }
+
+    public void ResetTimescale() {
+        audioSource.Pause();
+        timeScaleSlider.value = 1f;
+        Time.timeScale = 1f;
+        audioSource.pitch = 1f;
+        if (songPaused != true)
+            audioSource.UnPause();
     }
 
     public class Bars {
