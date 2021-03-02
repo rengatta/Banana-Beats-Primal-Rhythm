@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//hitbox that checks if the player released at the right time so that the endslider matches where the player clicked the startslider
 public class EndSliderCompletion : MonoBehaviour
 {
     [HideInInspector]

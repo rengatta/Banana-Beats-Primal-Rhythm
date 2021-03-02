@@ -9,18 +9,18 @@ public enum SliderType
     RightSlider
 }
 
+//interface shared between RegularSliders and HoldSliders
 public interface SliderInterface
 {
     SliderType sliderType { get; set; }
-    bool can_click { get; set; }
-    SliderInterface nextSlider { get; set; }
-    bool is_active { get; set; }
 
     float horizontal_speed { get; set; }
 
     bool can_destroy { get; set; }
 
     void Darken();
+
+    void DetectHit();
 }
 
 
@@ -29,34 +29,13 @@ public class RegularSlider : MonoBehaviour, SliderInterface
 
     [HideInInspector]
     public bool can_destroy { get; set; } = true;
-
     public float horizontal_speed { get; set; }
-
-    //if the slider is over the white triangle
-    [HideInInspector]
-    public bool can_click { get; set; }
-
-    //the active slider is the leftmost slider that can still be clicked, prevents you from clicking multiple sliders at the same time
-    [HideInInspector]
-    public bool is_active { get; set; }
-
-    [HideInInspector]
-    public SliderInterface nextSlider { get; set; }
-
     public SliderType sliderType { get { return _sliderType; } set { _sliderType = value; } }
-
-
     [SerializeField]
     private SliderType _sliderType;
-
-
     public Vector3 direction = Vector3.right;
-
-
     public SpriteRenderer spriteRenderer;
-
     public KeyCode clickKey;
-
 
     public void Darken()
     {
@@ -66,31 +45,16 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     }
 
 
-
     HitScore hitScore;
 
-    public void ActivateNextSlider()
-    {
-        nextSlider.can_click = true;
-    }
-
-    //makes sure the other sliders don't immediately trigger a click before the frame ends
-    IEnumerator SetActive()
-    {
-        yield return new WaitForEndOfFrame();
-        if (nextSlider != null)
-        {
-            nextSlider.is_active = true;
-        }
+    void HitDetected() {
         Destroy(this.gameObject);
     }
 
-    void Update()
-    {
-        this.transform.position += (direction * horizontal_speed * Time.deltaTime);
-
-        if (Input.GetKeyDown(clickKey) && can_click && is_active)
+    public void DetectHit() {
+        if (Input.GetKeyDown(clickKey))
         {
+
             if (hitScore == HitScore.Perfect)
             {
 
@@ -107,9 +71,14 @@ public class RegularSlider : MonoBehaviour, SliderInterface
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
             }
 
-            StartCoroutine(SetActive());
-
+            HitDetected();
         }
+
+    }
+
+    void Update()
+    {
+        this.transform.position += (direction * horizontal_speed * Time.deltaTime);
     }
 
 
@@ -117,16 +86,13 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     {
         if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer)
         {
-
             hitScore = HitScore.Perfect;
-            can_click = true;
 
         }
         else if (collision.gameObject.layer == GlobalHelper.goodRegionLayer)
         {
 
             hitScore = HitScore.Good;
-            can_click = true;
 
         }
     }

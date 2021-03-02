@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+//actually checks for a "MISS"
+//checks if the player clicked without any sliders in the white triangle
 public class FailClickChecker : MonoBehaviour
 {
-    //actually checks for a "MISS"
+
 
     public BoxCollider2D boxCollider;
 
@@ -23,7 +25,6 @@ public class FailClickChecker : MonoBehaviour
 
             int layerMask = ((1 << GlobalHelper.sliderLayer));
             RaycastHit2D m_Hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.up, 0f, layerMask);
-
 
             if (!m_Hit)
             {

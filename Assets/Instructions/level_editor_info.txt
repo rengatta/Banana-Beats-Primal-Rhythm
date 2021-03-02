@@ -1,0 +1,34 @@
+Level Editor Info
+
+Scene: Charter
+
+Top black strip represents the sliders coming from the left side
+Bottom black strip represents the sliders coming from the right side
+
+Hover over a strip and press 1 to insert a regular slider at your mouse's x position on the strip
+Hover over a strip and press 2 to insert a hold slider at your mouse's x position on the strip
+
+Mouse wheel up/down to move up and down the song position
+
+Ctrl + mouse wheel up/down to zoom in/out of the camera
+
+Click on any slider to select it and press the delete button to remove it
+
+Drag the start slider of a hold slider to move it around
+Drag the end slider of a hold slider to increase its length
+
+Buttons:
+    Play -  Plays/Resumes the current song
+    Pause - Pauses the current song. The top music slider is still moveable.
+    Reset Level Data - Removes all sliders from the editor
+    Save As - Converts all sliders in the editor into level data, then saves it into the filename you specify
+    Load - Load a file from the LevelSaves folder
+    Load Song - Load an MP3 from the Resources/Audio folder
+    Record - Activates a red icon when toggled on
+        Press A to record a regular slider on the top (left) strip at the current song position
+        Press L to record a regular slider on the bottom (right) strip
+        Press Q to record the start of a hold slider at the top (left) strip
+        Release Q to record the end slider and generate the body
+        Press O to record the start of a hold slider at the bottom (right) strip
+        Release O to record the end slider and generate the body
+    Playtest Level - Gets all of the sliders in the editor and converts it to level data so you can play test it

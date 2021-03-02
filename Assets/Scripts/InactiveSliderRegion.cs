@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
+//region to the left or right of the white triangle that darkens sliders
 public class InactiveSliderRegion : MonoBehaviour
 {
     public enum SliderRegion {
@@ -21,13 +23,6 @@ public class InactiveSliderRegion : MonoBehaviour
             if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.RightSlider && sliderRegion == SliderRegion.Right)
             {
               
-                
-                sliderInterface.can_click = false;
-                sliderInterface.is_active = false;
-                if (sliderInterface.nextSlider != null)
-                {
-                    sliderInterface.nextSlider.is_active = true;
-                }
 
                 GlobalHelper.global.scoreManager.combo = 0;
                 GlobalHelper.global.hitScoreText.text = "FAIL";
@@ -40,13 +35,6 @@ public class InactiveSliderRegion : MonoBehaviour
             else if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.LeftSlider && sliderRegion == SliderRegion.Left)
             {
 
-                sliderInterface.can_click = false;
-                sliderInterface.is_active = false;
-                if (sliderInterface.nextSlider != null)
-                {
-                    sliderInterface.nextSlider.is_active = true;
-                }
-
                 GlobalHelper.global.scoreManager.combo = 0;
                 GlobalHelper.global.hitScoreText.text = "FAIL";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
@@ -56,14 +44,8 @@ public class InactiveSliderRegion : MonoBehaviour
             }
 
 
-
-
         }
      
-
-
-
-
     }
 
 }

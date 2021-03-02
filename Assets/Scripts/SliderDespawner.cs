@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//region to the very left or right of the camera that destroys slider gameobjects
 public class SliderDespawner : MonoBehaviour
 {
     public SliderType sliderType;

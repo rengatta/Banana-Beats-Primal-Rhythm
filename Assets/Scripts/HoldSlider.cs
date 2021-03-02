@@ -3,103 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-
+//the hold slider is a start slider and an end slider with a body. the player holds down the key when interacting with this slider
 public class HoldSlider : MonoBehaviour, SliderInterface
 {
 
     [HideInInspector]
     public bool can_destroy { get; set; } = true;
-
     public float length = 10f;
-
     public EndSliderCompletion endSliderCompletion;
-
     public Transform body;
     public SpriteRenderer bodySprite;
     public Transform endSlider;
     public SpriteRenderer startSliderSpriteRenderer;
     public SpriteRenderer endSliderSpriteRenderer;
     public Transform start;
-
-
     public GameObject spriteMaskRoot;
     public float horizontal_speed { get; set; }
-
     public EndSliderFailBox endSliderFailBoxScript;
-
-    //if the slider is over the white triangle
-    [HideInInspector]
-    public bool can_click { get; set; }
-
-    //the active slider is the leftmost slider that can still be clicked, prevents you from clicking multiple sliders at the same time
-    [HideInInspector]
-    public bool is_active { get; set; }
-
-    [HideInInspector]
-    public SliderInterface nextSlider { get; set; }
-
     public SliderType sliderType { get { return _sliderType; } set { _sliderType = value; } }
-
     [SerializeField]
     private SliderType _sliderType;
-
     HitScore hitScore;
-
-
     public Vector3 direction = Vector3.left;
-
-    bool clicked = false;
     public KeyCode clickKey;
+    public float scoreModifier = 0.1f;
 
-
-
-    void Start()
+    public void Initialize(float length)
     {
-        body.localScale = new Vector3(length, body.localScale.y);
-        float xSize = bodySprite.bounds.size.x;
-
-
         if (_sliderType == SliderType.RightSlider)
         {
-            //start.transform.localPosition += new Vector3(bodySprite.bounds.size.x / 2f, 0f, 0f);
-            endSlider.position = new Vector3(start.transform.position.x + xSize, endSlider.position.y, endSlider.position.z);
+            endSlider.position = new Vector3(start.transform.position.x + length, endSlider.position.y, 0f);
+            body.localScale = new Vector3((endSlider.localPosition.x / 10f), body.localScale.y, 0f);
         }
         else if (_sliderType == SliderType.LeftSlider)
         {
-            //start.transform.localPosition += new Vector3(bodySprite.bounds.size.x / 2f, 0f, 0f);
-            endSlider.position = new Vector3(start.transform.position.x - xSize, endSlider.position.y, endSlider.position.z);
 
+            endSlider.position = new Vector3(start.transform.position.x - length, endSlider.position.y, 0f);
+            body.localScale = new Vector3(-(endSlider.localPosition.x / 10f), body.localScale.y, 0f);
         }
+
 
         endSliderCompletion.endSlider = endSlider.gameObject;
     }
 
-
-    public void ActivateNextSlider()
-    {
-        nextSlider.can_click = true;
-    }
-
-    //makes sure the other sliders don't immediately trigger a click before the frame ends
-    IEnumerator SetActive()
-    {
-        yield return new WaitForEndOfFrame();
-        if (nextSlider != null)
-        {
-            nextSlider.is_active = true;
-        }
-
-    }
-
-
     void Update()
     {
         start.transform.position += (direction * horizontal_speed * Time.deltaTime);
+    }
 
+    public void DetectHit() {
 
-        if (Input.GetKeyDown(clickKey) && can_click && is_active && !clicked)
+        if (Input.GetKeyDown(clickKey))
         {
-            clicked = true;
+
             if (hitScore == HitScore.Perfect)
             {
                 GlobalHelper.global.scoreManager.score += 10;
@@ -117,16 +73,16 @@ public class HoldSlider : MonoBehaviour, SliderInterface
             }
 
             StartCoroutine(HoldDown());
-            StartCoroutine(SetActive());
 
         }
+
     }
-
-
-    public float scoreModifier = 0.1f;
-
+    bool firstHold = false;
     IEnumerator HoldDown()
     {
+
+        if (firstHold) yield break;
+        firstHold = true;
         can_destroy = false;
         //instantiates the sprite mask gameobject and sets it to the parent of this gameobject so that it won't mask any other sprites outside
         GameObject spriteMaskRootInstance = Instantiate(spriteMaskRoot);
@@ -136,7 +92,9 @@ public class HoldSlider : MonoBehaviour, SliderInterface
         spriteMaskRoot.transform.position = new Vector3(this.transform.position.x, spriteMaskRoot.transform.position.y, spriteMaskRoot.transform.position.z);
 
         //removes the child that contains the box collider so we can detect the end slider later
-        endSliderCompletion.gameObject.transform.parent = null;
+        if (endSliderCompletion != null)
+            endSliderCompletion.gameObject.transform.parent = null;
+
 
         //deparent the fail box so it stays stationary and is ready to catch the end slider
         endSliderFailBoxScript.endSlider = endSlider.gameObject;
@@ -168,8 +126,6 @@ public class HoldSlider : MonoBehaviour, SliderInterface
                 //destroy the sprite mask's previous root since we don't need it anymore
                 Destroy(spriteMaskRootInstance);
 
-                if (nextSlider != null)
-                    nextSlider.is_active = true;
 
                 if (endSliderCompletion.DetectHit())
                 {
@@ -201,8 +157,6 @@ public class HoldSlider : MonoBehaviour, SliderInterface
     //triggers whenever the end slider enters the fail box
     public void TriggerFail()
     {
-        if (nextSlider != null)
-            nextSlider.is_active = true;
 
         if(endSliderFailBoxScript != null) Destroy(endSliderFailBoxScript.gameObject);
         if(endSliderCompletion.gameObject != null) Destroy(endSliderCompletion.gameObject);
@@ -237,15 +191,10 @@ public class HoldSlider : MonoBehaviour, SliderInterface
         if (collision.gameObject.layer == 10)
         {
             hitScore = HitScore.Perfect;
-            can_click = true;
-
         }
         else if (collision.gameObject.layer == 11)
         {
-
             hitScore = HitScore.Good;
-            can_click = true;
-
         }
     }
 
