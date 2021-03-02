@@ -2,6 +2,9 @@ Level Editor Info
 
 Scene: Charter
 
+Saves should be kept in LevelSaves
+MP3 files should be kept in Resources/Audio
+
 Top black strip represents the sliders coming from the left side
 Bottom black strip represents the sliders coming from the right side
 
@@ -11,6 +14,8 @@ Hover over a strip and press 2 to insert a hold slider at your mouse's x positio
 Mouse wheel up/down to move up and down the song position
 
 Ctrl + mouse wheel up/down to zoom in/out of the camera
+
+Ctrl + S to quicksave
 
 Click on any slider to select it and press the delete button to remove it
 
