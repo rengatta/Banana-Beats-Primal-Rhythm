@@ -12,7 +12,6 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource;
     public List<Bars> songBars;
     public TextMeshProUGUI songDurationText;
-    public float currentSongDuration;
     public string chartName = "";
     bool songPaused = true;
     public bool songStarted = false;
@@ -23,7 +22,7 @@ public class AudioManager : MonoBehaviour
     public bool playtestPaused = false;
     public Slider volumeSlider;
     public Slider timeScaleSlider;
-
+    float tempTimeScale = 1f;
     public void OnVolumeChanged()
     {
         audioSource.volume = volumeSlider.value;
@@ -34,16 +33,22 @@ public class AudioManager : MonoBehaviour
     public void ChangeTimescale()
     {
         audioSource.Pause();
-        Time.timeScale = timeScaleSlider.value;
-        audioSource.pitch = Time.timeScale;
+        //Time.timeScale = timeScaleSlider.value;
+        audioSource.pitch = timeScaleSlider.value;
         if (songPaused != true)
             audioSource.UnPause();
     }
 
+    public void RestoreTimescale() {
+        timeScaleSlider.value = tempTimeScale;
+        audioSource.pitch = timeScaleSlider.value;
+    }
+
     public void ResetTimescale() {
         audioSource.Pause();
+        tempTimeScale = timeScaleSlider.value;
         timeScaleSlider.value = 1f;
-        Time.timeScale = 1f;
+       // Time.timeScale = 1f;
         audioSource.pitch = 1f;
         if (songPaused != true)
             audioSource.UnPause();
@@ -62,12 +67,11 @@ public class AudioManager : MonoBehaviour
             if (!songPaused && !sliderPaused)
             {
               
-                slider.value = currentSongDuration;
-                currentSongDuration += Time.deltaTime;
+                slider.value = audioSource.time;
+
                 
-                if(currentSongDuration >= audioSource.clip.length - 0.1f) {
+                if(audioSource.time >= audioSource.clip.length - 0.1f) {
                     audioSource.time = 0f;
-                    currentSongDuration = 0f;
 
                 }
             }
@@ -87,7 +91,6 @@ public class AudioManager : MonoBehaviour
         audioSource.Stop();
         audioSource.Play();
         slider.maxValue = audioSource.clip.length - 0.1f;
-        currentSongDuration = 0.0f;
         songPaused = false;
         songStarted = true;
         StopAllCoroutines();
@@ -102,7 +105,7 @@ public class AudioManager : MonoBehaviour
 
     public void ResumeButtonPressed()
     {
-
+        if (playtestPaused) return;
         if (GlobalHelper.global.currentAudioClip == null) return;
 
 
@@ -131,7 +134,6 @@ public class AudioManager : MonoBehaviour
 
 
     public void SliderEndDrag() {
-        currentSongDuration = slider.value;
         audioSource.time = slider.value;
         sliderPaused = false;
         if(songPaused != true)
@@ -146,7 +148,6 @@ public class AudioManager : MonoBehaviour
         if ((slider.value + mouseWheelSpeed) > slider.maxValue) slider.value = slider.maxValue;
         else
             slider.value += mouseWheelSpeed;
-        currentSongDuration = slider.value;
         audioSource.time = slider.value;
         if (songPaused != true)
             audioSource.UnPause();
@@ -160,7 +161,6 @@ public class AudioManager : MonoBehaviour
         if ((slider.value - mouseWheelSpeed) < 0.0f) slider.value = 0.0f;
         else
             slider.value -= mouseWheelSpeed;
-        currentSongDuration = slider.value;
         audioSource.time = slider.value;
         if (songPaused != true)
             audioSource.UnPause();

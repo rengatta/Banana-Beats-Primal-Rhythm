@@ -135,28 +135,29 @@ public class SliderManager : MonoBehaviour
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
         double spawnPosition;
+        float offsetTime = time - 2f;
 
         for (int i = 0; i < currentLevel.hitTimes.Count; i++)
         {
             switch (currentLevel.sliderSpawns[i])
             {
                 case LevelSliderType.LeftSlider:
-                    if (currentLevel.hitTimes[i] < time) break;
+                    if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
                     SpawnLeft((float)speed, -(float)spawnPosition);
                     break;
                 case LevelSliderType.RightSlider:
-                    if (currentLevel.hitTimes[i] < time) break;
+                    if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
                     SpawnRight((float)speed, (float)spawnPosition);
                     break;
                 case LevelSliderType.LeftHoldSlider:
-                    if (currentLevel.hitTimes[i] < time) break;
+                    if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
                     SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
                     break;
                 case LevelSliderType.RightHoldSlider:
-                    if (currentLevel.hitTimes[i] < time) break;
+                    if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
                     SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
                     break;

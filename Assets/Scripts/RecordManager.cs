@@ -47,6 +47,7 @@ public class RecordManager : MonoBehaviour
             GlobalHelper.global.audioSource.time = songDurationSlider.value;
             audioManager.playtestPaused = false;
             audioManager.Pause();
+            audioManager.RestoreTimescale();
             sliderManager.DestroyActiveSliders();
             Camera.main.orthographicSize = tempCameraSize;
 
@@ -83,6 +84,7 @@ public class RecordManager : MonoBehaviour
             GlobalHelper.global.audioSource.time = songDurationSlider.value;
             audioManager.playtestPaused = false;
             audioManager.Pause();
+            audioManager.RestoreTimescale();
             sliderManager.DestroyActiveSliders();
             Camera.main.orthographicSize = tempCameraSize;
 
