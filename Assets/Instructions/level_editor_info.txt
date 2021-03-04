@@ -17,6 +17,8 @@ Ctrl + mouse wheel up/down to zoom in/out of the camera
 
 Ctrl + S to quicksave
 
+Space to pause/resume.
+
 Click on any slider to select it and press the delete button to remove it
 
 Drag the start slider of a hold slider to move it around
@@ -37,3 +39,4 @@ Buttons:
         Press O to record the start of a hold slider at the bottom (right) strip
         Release O to record the end slider and generate the body
     Playtest Level - Gets all of the sliders in the editor and converts it to level data so you can play test it
+    Playtest at current time - Plays at the current song time at the top

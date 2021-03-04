@@ -130,6 +130,47 @@ public class SliderManager : MonoBehaviour
 
     }
 
+    public void PlayLevelAtTime(float time)
+    {
+        LevelData currentLevel = GlobalHelper.global.currentLevel;
+        double speed = currentLevel.sliderSpeed;
+        double spawnPosition;
+
+        for (int i = 0; i < currentLevel.hitTimes.Count; i++)
+        {
+            switch (currentLevel.sliderSpawns[i])
+            {
+                case LevelSliderType.LeftSlider:
+                    if (currentLevel.hitTimes[i] < time) break;
+                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    SpawnLeft((float)speed, -(float)spawnPosition);
+                    break;
+                case LevelSliderType.RightSlider:
+                    if (currentLevel.hitTimes[i] < time) break;
+                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    SpawnRight((float)speed, (float)spawnPosition);
+                    break;
+                case LevelSliderType.LeftHoldSlider:
+                    if (currentLevel.hitTimes[i] < time) break;
+                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
+                    break;
+                case LevelSliderType.RightHoldSlider:
+                    if (currentLevel.hitTimes[i] < time) break;
+                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+    }
+
+
+
     void SpawnRight(float speed, float positionx) {
         GameObject sliderInstance = Instantiate(rightSliderPrefab);
         sliderInstance.transform.position = new Vector3(positionx, sliderSpawnArea.position.y, 0f);

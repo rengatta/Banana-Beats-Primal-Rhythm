@@ -44,9 +44,9 @@ public class RecordManager : MonoBehaviour
             recordRoot.SetActive(true);
             editNotes.Toggle();
             GlobalHelper.global.audioSource.Stop();
-            GlobalHelper.global.audioSource.time = 0.0f;
+            GlobalHelper.global.audioSource.time = songDurationSlider.value;
             audioManager.playtestPaused = false;
-            audioManager.PauseButtonPressed();
+            audioManager.Pause();
             sliderManager.DestroyActiveSliders();
             Camera.main.orthographicSize = tempCameraSize;
 
@@ -69,6 +69,47 @@ public class RecordManager : MonoBehaviour
             
         }
     }
+
+    public void PlayTestCurrentTimeButtonClicked()
+    {
+        if (isPlayTesting)
+        {
+            editNotes.ToggleLines();
+            isPlayTesting = false;
+            playTestRoot.SetActive(false);
+            recordRoot.SetActive(true);
+            editNotes.Toggle();
+            GlobalHelper.global.audioSource.Stop();
+            GlobalHelper.global.audioSource.time = songDurationSlider.value;
+            audioManager.playtestPaused = false;
+            audioManager.Pause();
+            sliderManager.DestroyActiveSliders();
+            Camera.main.orthographicSize = tempCameraSize;
+
+        }
+        else
+        {
+            tempCameraSize = Camera.main.orthographicSize;
+            Camera.main.orthographicSize = 5f;
+            editNotes.ToggleLines();
+            SaveEdit();
+            isPlayTesting = true;
+            playTestRoot.SetActive(true);
+            editNotes.Toggle();
+            recordRoot.SetActive(false);
+            audioManager.ResetTimescale();
+            audioManager.playtestPaused = true;
+            sliderManager.PlayLevelAtTime(songDurationSlider.value);
+            GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
+            //GlobalHelper.global.audioSource.Stop();
+            GlobalHelper.global.audioSource.time = songDurationSlider.value;
+            GlobalHelper.global.audioSource.Play();
+
+        }
+    }
+
+
+
 
     public void LoadSong() {
         string path = EditorUtility.OpenFilePanel("Select an mp3 file", Application.dataPath + "\\Resources\\Audio\\", "mp3");

@@ -95,7 +95,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PauseButtonPressed() {
+    public void Pause() {
         audioSource.Pause();
         songPaused = true;
     }
@@ -105,13 +105,19 @@ public class AudioManager : MonoBehaviour
 
         if (GlobalHelper.global.currentAudioClip == null) return;
 
+
         if (!songStarted) {
             Reset();
         }
         else {
-            audioSource.time = slider.value;
-            audioSource.Play();
-            songPaused = false;
+            if (!songPaused) {
+                Pause();
+            }
+            else {
+                audioSource.time = slider.value;
+                audioSource.Play();
+                songPaused = false;
+            }
         }
         
     }

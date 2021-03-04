@@ -12,6 +12,11 @@ public class LevelEditorInput : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            audioManager.ResumeButtonPressed();
+
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
