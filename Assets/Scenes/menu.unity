@@ -480,7 +480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49733309}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 818, y: 360, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1751,6 +1751,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941ded76176d70d44ba4a1f4011c46cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level1:
+    sceneAsset: {fileID: 102900000, guid: a03fb60b317babe49809bbe427122fb1, type: 3}
+    sceneName: Scenes/LevelSelectMenu
 --- !u!4 &423647779
 Transform:
   m_ObjectHideFlags: 0
@@ -2960,13 +2963,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "start\r\ndfghjmvsb h uh  sj j \r\n sh jh kkkkjkc k lcalkcmacm\r\n cnnjcnbhcbnakjcnm\r\n
-    cnicbhjdc\r\n cbyucvbgdsb vkjn\r\n ghbh\r\n uipousv\r\n xc   \r\n tkm yygsdv 
-    cbyucvbgdsb gvdfx\r\n  hhmgnbshjmmb\r\n  m  j k  mbf cvbn nbfe4ynj \r\n  ne rthnbvb  
-    \r\n  bv vn bgdrgdfb  \r\n  cghthfgbdfb \r\n  \r\n  \r\n  \r\n  cghdfgbc chhfgd
-    \r\n  cb bdb d x \r\n  c c dfgdgtjhdxgb   \r\n   fg cggxgc  \r\n     \r\n\t \r\n\t 
-    x h xg \r\n\t  \r\n\t   \r\n\t   vkjn bf vkjnfgcvbfvb\r\n\t   \r\n\t   bdbfn\r\n\t  
-    hb\r\n\t   fgb\r\n\t   end\r\n\t   \r\n\t   "
+  m_Text: "start\r\ndfghjmvsb h uh  sj j \r\n sh jh kkkkjkc k lcalkcmacm\r\n cnnjcnbhcbnakjcnm\r\ncnicbhjdc\r\ncbyucvbgdsb
+    vkjn\r\n ghbh\r\n uipousv\r\n xc   \r\n tkm yygsdv  cbyucvbgdsb gvdfx\r\n  hhmgnbshjmmb\r\n 
+    m  j k  mbf cvbn nbfe4ynj \r\n  ne rthnbvb   \r\n  bv vn bgdrgdfb  \r\n  cghthfgbdfb
+    \r\n  \r\n  \r\n  \r\n  cghdfgbc chhfgd \r\n  cb bdb d x \r\n  c c dfgdgtjhdxgb  
+    \r\n   fg cggxgc  \r\n     \r\n\t \r\n\t  x h xg \r\n\t  \r\n\t   \r\n\t   vkjn
+    bf vkjnfgcvbfvb\r\n\t   \r\n\t   bdbfn\r\n\t   hb\r\n\t   fgb\r\n\t   end\r\n\t  
+    \r\n\t   "
 --- !u!222 &861019299
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6136,7 +6139,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

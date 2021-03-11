@@ -41,6 +41,26 @@ public static class GlobalHelper
 }
 
 
+public static class GameState
+{
+    public static bool paused = false;
+}
+
+public static class SceneToSceneData
+{
+    static SceneToSceneData()
+    {
+
+    }
+
+    public static float maxPossibleScore = 1f;
+    public static int maxPossibleCombo = 1;
+    public static float currentScore = 0f;
+    public static int currentHighestCombo = 0;
+    public static string nextLevelName = "nolevel";
+    public static int totalHits = 0;
+}
+
 public class Global : MonoBehaviour
 {
     public TextMeshProUGUI hitScoreText;

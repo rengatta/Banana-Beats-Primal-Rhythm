@@ -2,28 +2,73 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using Utilities;
 public class LevelLoader : MonoBehaviour
 {
     public SliderManager sliderManager;
 
     public bool debugging = true;
     public string debugLevelName;
+    [Range(0.0f, 1.0f)]
+    public float debugStartTime = 0.0f;
+    public AudioSource audioSource;
+    bool songStarted = false;
+    public SceneField levelCompleteScene;
+    public float endLevelPause = 2f;
+
+
 
     public void InitializeLevel(string levelName) {
         LoadLevel(levelName);
-        sliderManager.PlayLevel();
-        GlobalHelper.global.audioSource.Play();
+        
+        sliderManager.PlayLevelDebug(debugStartTime);
+
+        audioSource.Play();
+        audioSource.time = debugStartTime * audioSource.clip.length;
+        songStarted = true;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if(debugging) {
+        if (debugging)
+        {
             InitializeLevel(debugLevelName);
+        }
+        else {
+            
+            InitializeLevel(SceneToSceneData.nextLevelName);
 
         }
     }
+
+    public void DetectLevelEnd()
+    {
+        if (songStarted)
+        {
+            if (audioSource.time >= audioSource.clip.length)
+            {
+                StartCoroutine(GotoLevelCompleteScene());
+            }
+        }
+    }
+
+    IEnumerator GotoLevelCompleteScene() {
+        SceneToSceneData.currentScore = GlobalHelper.global.scoreManager.score;
+        SceneToSceneData.currentHighestCombo = GlobalHelper.global.scoreManager.highestCombo;
+        SceneToSceneData.totalHits = GlobalHelper.global.scoreManager.totalHits;
+        yield return new WaitForSeconds(endLevelPause);
+        SceneManager.LoadScene(levelCompleteScene);
+    }
+
+
+    private void Update()
+    {
+        DetectLevelEnd();
+    }
+
+
 
     public void LoadLevel(string levelName)
     {

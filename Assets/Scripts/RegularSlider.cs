@@ -21,6 +21,8 @@ public interface SliderInterface
     void Darken();
 
     void DetectHit();
+
+    float score { get; set; }
 }
 
 
@@ -37,35 +39,44 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     public SpriteRenderer spriteRenderer;
     public KeyCode clickKey;
 
-    public void Darken()
-    {
+    [HideInInspector]
+    public float score { get; set; } = 10f;
+    HitScore hitScore;
+
+
+
+    public void Darken() {
         Color tempColor = Color.black;
         tempColor.a = 0.4f;
         spriteRenderer.color = tempColor;
     }
 
 
-    HitScore hitScore;
 
     void HitDetected() {
         Destroy(this.gameObject);
     }
 
     public void DetectHit() {
-        if (Input.GetKeyDown(clickKey))
+        if (Input.GetKeyDown(clickKey) && !GameState.paused)
         {
 
             if (hitScore == HitScore.Perfect)
             {
+                GlobalHelper.global.scoreManager.totalHits += 1;
+                GlobalHelper.global.scoreManager.score += score*1.5f;
 
-                GlobalHelper.global.scoreManager.score += 10;
                 GlobalHelper.global.scoreManager.combo += 1;
+
+
+
                 GlobalHelper.global.hitScoreText.text = "PERFECT";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
             }
             else if (hitScore == HitScore.Good)
             {
-                GlobalHelper.global.scoreManager.score += 5;
+                GlobalHelper.global.scoreManager.totalHits += 1;
+                GlobalHelper.global.scoreManager.score += score;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "GOOD";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
@@ -76,14 +87,12 @@ public class RegularSlider : MonoBehaviour, SliderInterface
 
     }
 
-    void Update()
-    {
+    void Update() {
         this.transform.position += (direction * horizontal_speed * Time.deltaTime);
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer)
         {
             hitScore = HitScore.Perfect;

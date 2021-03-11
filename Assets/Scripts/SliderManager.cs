@@ -37,7 +37,9 @@ public class LevelData
     public HoldSliderDictionary holdSliderEndTimes;
     public string audioClipName;
     public double sliderSpeed;
-
+    public float regularSliderScore = 10f;
+    public float holdSliderScore = 5f;
+    public float holdSliderHoldScore = 1f;
 
     LevelData() {
         hitTimes = new List<double>();
@@ -89,6 +91,16 @@ public class SliderManager : MonoBehaviour
     public Transform triangleCenter;
     public List<GameObject> activeSliders = new List<GameObject>();
 
+    public float regularSliderScore = 10f;
+    public float holdSliderScore = 5f;
+    public float holdSliderHoldScore = 0.1f;
+    public float perfectMultiplier = 1.5f;
+    float totalScore = 0f;
+    int totalCombo = 0;
+    public AudioSource audioSource;
+
+
+
     public void DestroyActiveSliders() {
         for(int i=0; i < activeSliders.Count; i++) {
             if(activeSliders[i] != null ) 
@@ -97,11 +109,17 @@ public class SliderManager : MonoBehaviour
         activeSliders.Clear();
     }
 
-    public void PlayLevel() {
+    public void PlayLevelDebug(float debugStartTime = 0.0f) {
+        float songStartTime = debugStartTime * audioSource.clip.length;
+        PlayLevelAtTime(songStartTime);
+    }
+
+    public void PlayLevelRegular() {
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
         double spawnPosition;
-
+        totalScore = 0f;
+        totalCombo = 0;
         for (int i=0; i < currentLevel.hitTimes.Count; i++) {
             switch (currentLevel.sliderSpawns[i])
             {
@@ -124,10 +142,9 @@ public class SliderManager : MonoBehaviour
                 default:
                     break;
             }
-
-
         }
-
+        SceneToSceneData.maxPossibleScore = this.totalScore;
+        SceneToSceneData.maxPossibleCombo = this.totalCombo;
     }
 
     public void PlayLevelAtTime(float time)
@@ -136,7 +153,8 @@ public class SliderManager : MonoBehaviour
         double speed = currentLevel.sliderSpeed;
         double spawnPosition;
         float offsetTime = time - 2f;
-
+        totalScore = 0f;
+        totalCombo = 0;
         for (int i = 0; i < currentLevel.hitTimes.Count; i++)
         {
             switch (currentLevel.sliderSpawns[i])
@@ -164,9 +182,9 @@ public class SliderManager : MonoBehaviour
                 default:
                     break;
             }
-
-
         }
+        SceneToSceneData.maxPossibleScore = this.totalScore;
+        SceneToSceneData.maxPossibleCombo = this.totalCombo;
 
     }
 
@@ -178,8 +196,12 @@ public class SliderManager : MonoBehaviour
 
         SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
         sliderScript.horizontal_speed = speed;
+        sliderScript.score = regularSliderScore;
 
         activeSliders.Add(sliderInstance);
+
+        totalScore += regularSliderScore * perfectMultiplier;
+        totalCombo += 1;
     }
 
     void SpawnRightHold(float speed, float positionx, float length)
@@ -187,12 +209,18 @@ public class SliderManager : MonoBehaviour
         GameObject sliderInstance = Instantiate(rightHoldSliderPrefab);
         sliderInstance.transform.position = new Vector3(positionx, sliderSpawnArea.position.y, 0f);
         HoldSlider holdSliderScript = sliderInstance.GetComponent<HoldSlider>();
+        holdSliderScript.holdScore = holdSliderHoldScore;
         holdSliderScript.Initialize(length);
 
+
         SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
+        sliderScript.score = holdSliderScore;
         sliderScript.horizontal_speed = speed;
 
         activeSliders.Add(sliderInstance);
+        totalScore += holdSliderScore * perfectMultiplier * 2.0f;
+        totalScore += holdSliderHoldScore * length;
+        totalCombo += 2;
     }
 
     void SpawnLeftHold(float speed, float positionx, float length)
@@ -201,14 +229,18 @@ public class SliderManager : MonoBehaviour
         sliderInstance.transform.position = new Vector3(positionx, leftSliderSpawnArea.position.y, 0f);
 
         HoldSlider holdSliderScript = sliderInstance.GetComponent<HoldSlider>();
+        holdSliderScript.holdScore = holdSliderHoldScore;
         holdSliderScript.Initialize(length);
 
         SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
+        sliderScript.score = holdSliderScore;
         sliderScript.horizontal_speed = speed;
 
 
         activeSliders.Add(sliderInstance);
-
+        totalScore += holdSliderScore * perfectMultiplier * 2.0f;
+        totalScore += holdSliderHoldScore * length;
+        totalCombo += 2;
 
     }
 
@@ -217,28 +249,14 @@ public class SliderManager : MonoBehaviour
         sliderInstance.transform.position = new Vector3(positionx, leftSliderSpawnArea.position.y, 0f);
 
         SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();
+        sliderScript.score = holdSliderScore;
         sliderScript.horizontal_speed = speed;
 
         activeSliders.Add(sliderInstance);
-
+        totalScore += regularSliderScore * perfectMultiplier;
+        totalCombo += 1;
     }
 
-    IEnumerator TestSpawner() {
-        while (true) {
-                SpawnRight(8.0f, sliderSpawnArea.position.x);
-                yield return new WaitForSeconds(test_spawn_rate);
-                SpawnLeft(8.0f, leftSliderSpawnArea.position.x);
-                yield return new WaitForSeconds(test_spawn_rate);
-        }
-    }
-
-    void Start()
-    {  
-        if (testing)
-        {
-            StartCoroutine(TestSpawner());
-        }
-    }
 
 
 }

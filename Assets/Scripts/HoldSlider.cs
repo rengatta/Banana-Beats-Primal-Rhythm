@@ -26,7 +26,14 @@ public class HoldSlider : MonoBehaviour, SliderInterface
     HitScore hitScore;
     public Vector3 direction = Vector3.left;
     public KeyCode clickKey;
-    public float scoreModifier = 0.1f;
+
+
+    [HideInInspector]
+    public float score { get; set; } = 5f;
+    [HideInInspector]
+    public float holdScore = 0.1f;
+
+  
 
     public void Initialize(float length)
     {
@@ -53,12 +60,13 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
     public void DetectHit() {
 
-        if (Input.GetKeyDown(clickKey))
+        if (Input.GetKeyDown(clickKey) && !GameState.paused)
         {
 
             if (hitScore == HitScore.Perfect)
             {
-                GlobalHelper.global.scoreManager.score += 10;
+                GlobalHelper.global.scoreManager.totalHits += 1;
+                GlobalHelper.global.scoreManager.score += score*1.5f;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "PERFECT";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
@@ -66,7 +74,8 @@ public class HoldSlider : MonoBehaviour, SliderInterface
             }
             else if (hitScore == HitScore.Good)
             {
-                GlobalHelper.global.scoreManager.score += 5;
+                GlobalHelper.global.scoreManager.totalHits += 1;
+                GlobalHelper.global.scoreManager.score += score;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "GOOD";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
@@ -102,7 +111,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
         while (true)
         {
-            GlobalHelper.global.scoreManager.score += scoreModifier * Time.deltaTime;
+            GlobalHelper.global.scoreManager.score += holdScore * Time.deltaTime;
 
             //detects if the player lets go of a hold in order to "catch" the end slider
             if (Input.GetKeyUp(clickKey))
@@ -129,9 +138,10 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
                 if (endSliderCompletion.DetectHit())
                 {
+                    GlobalHelper.global.scoreManager.totalHits += 1;
                     GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
                     GlobalHelper.global.hitScoreText.text = "PERFECT";
-                    GlobalHelper.global.scoreManager.score += 5;
+                    GlobalHelper.global.scoreManager.score += score * 1.5f;
                     GlobalHelper.global.scoreManager.combo += 1;
                     Destroy(this.gameObject);
                 }
