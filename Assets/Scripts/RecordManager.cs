@@ -38,6 +38,7 @@ public class RecordManager : MonoBehaviour
 
     public void PlayTestButtonClicked() {
         if(isPlayTesting) {
+            StopAllCoroutines();
             editNotes.ToggleLines();
             isPlayTesting = false;
             playTestRoot.SetActive(false);
@@ -64,17 +65,24 @@ public class RecordManager : MonoBehaviour
             audioManager.playtestPaused = true;
             sliderManager.PlayLevelRegular();
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
-            GlobalHelper.global.audioSource.Stop();
-            GlobalHelper.global.audioSource.time = 0.0f;
-            GlobalHelper.global.audioSource.Play();
+            StartCoroutine(PreTimeWait());
             
         }
     }
+
+    IEnumerator PreTimeWait() {
+        yield return new WaitForSeconds(3.0f);
+        GlobalHelper.global.audioSource.Stop();
+        GlobalHelper.global.audioSource.time = 0.0f;
+        GlobalHelper.global.audioSource.Play();
+    }
+
 
     public void PlayTestCurrentTimeButtonClicked()
     {
         if (isPlayTesting)
         {
+            StopAllCoroutines();
             editNotes.ToggleLines();
             isPlayTesting = false;
             playTestRoot.SetActive(false);

@@ -24,10 +24,20 @@ public class LevelLoader : MonoBehaviour
         StopAllCoroutines();
         LoadLevel(levelName);
         
-        sliderManager.PlayLevelDebug(debugStartTime, preTime);
+        sliderManager.PlayLevelDebug(debugStartTime);
+    }
+
+    public void InitializeLevel2(string levelName)
+    {
+        songStarted = false;
+        StopAllCoroutines();
+        LoadLevel(levelName);
+
+        sliderManager.PlayLevelRegular(preTime);
 
         StartCoroutine(PreTimeWait());
     }
+
 
 
     IEnumerator PreTimeWait() {
@@ -56,7 +66,7 @@ public class LevelLoader : MonoBehaviour
             else
             {
                 debugStartTime = 0.0f;
-                InitializeLevel(SceneToSceneData.nextLevelName);
+                InitializeLevel2(SceneToSceneData.nextLevelName);
             }
 
         }
