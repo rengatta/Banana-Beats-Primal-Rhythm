@@ -10,6 +10,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject globalRoot;
     public GameObject pauseRoot;
     public GameObject optionsRoot;
+    public GameObject instructionsRoot;
+
 
     public AudioSource audioSource;
 
@@ -66,7 +68,23 @@ public class PauseMenu : MonoBehaviour
 
     }
 
+    public void InstructionsButtonPressed() {
+        instructionsRoot.SetActive(true);
+        pauseRoot.SetActive(false);
+
+    }
+
+    public void InstructionsBackButtonPressed()
+    {
+        instructionsRoot.SetActive(false);
+        pauseRoot.SetActive(true);
+
+    }
+
+
     public void BackToLevelSelectButton() {
+        GameState.paused = false;
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(levelSelectScene);
     }
 

@@ -16,16 +16,26 @@ public class LevelLoader : MonoBehaviour
     bool songStarted = false;
     public SceneField levelCompleteScene;
     public float endLevelPause = 2f;
-
+    public float preTime = 3.0f;
 
 
     public void InitializeLevel(string levelName) {
+        songStarted = false;
+        StopAllCoroutines();
         LoadLevel(levelName);
         
-        sliderManager.PlayLevelDebug(debugStartTime);
+        sliderManager.PlayLevelDebug(debugStartTime, preTime);
 
-        audioSource.Play();
+        StartCoroutine(PreTimeWait());
+    }
+
+
+    IEnumerator PreTimeWait() {
+        yield return new WaitForSeconds(preTime);
+
+
         audioSource.time = debugStartTime * audioSource.clip.length;
+        audioSource.Play();
         songStarted = true;
     }
 
@@ -37,8 +47,17 @@ public class LevelLoader : MonoBehaviour
             InitializeLevel(debugLevelName);
         }
         else {
-            
-            InitializeLevel(SceneToSceneData.nextLevelName);
+
+            if (SceneToSceneData.nextLevelName == "nolevel")
+            {
+                InitializeLevel(debugLevelName);
+
+            }
+            else
+            {
+                debugStartTime = 0.0f;
+                InitializeLevel(SceneToSceneData.nextLevelName);
+            }
 
         }
     }
@@ -82,11 +101,11 @@ public class LevelLoader : MonoBehaviour
         }
         else
         {
+       
             string readText = File.ReadAllText(path);
             GlobalHelper.global.currentLevel = JsonUtility.FromJson<LevelData>(readText);
             GlobalHelper.global.currentAudioClip = Resources.Load<AudioClip>("Audio\\" + GlobalHelper.global.currentLevel.audioClipName);
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
-
         }
 
 

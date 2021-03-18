@@ -32,7 +32,11 @@ public class LevelSelectLevel : MonoBehaviour
 
         if (!File.Exists(path))
         {
-            path = Application.dataPath + "\\PlayerPerformanceData\\nolevel.playerdata";
+            yourBestScore.text = "Best Score: X";
+            yourBestGrade.text = "Best Grade: X";
+            yourBestCombo.text = "Best Combo: X";
+            yourBestAccuracy.text = "Best Accuracy: X";
+            return;
         }
 
 

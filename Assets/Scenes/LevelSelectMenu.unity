@@ -970,12 +970,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   songNameText: {fileID: 746305875}
-  songName: Optimistic
+  songName: Hype
   yourBestScore: {fileID: 1383740421}
   yourBestGrade: {fileID: 1990365699}
   yourBestCombo: {fileID: 1657330357}
   yourBestAccuracy: {fileID: 2146041264}
-  levelFilename: Optimistic
+  levelFilename: Hype
   songScene:
     sceneAsset: {fileID: 102900000, guid: e5ed6b8bafef2cc4fa8310eb8cb47377, type: 3}
     sceneName: Scenes/SongLevel
@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Optimistic
+  m_text: Hype
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1390,7 +1390,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Optimistic
+  m_text: Brainless
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2498,8 +2498,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 546, y: -298.5}
-  m_SizeDelta: {x: 1092, y: 597}
+  m_AnchoredPosition: {x: 568.00006, y: -319.5}
+  m_SizeDelta: {x: 1136, y: 639}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1395960403
 MonoBehaviour:
@@ -3059,7 +3059,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 50
   m_Viewport: {fileID: 397728594}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -3388,12 +3388,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   songNameText: {fileID: 754636465}
-  songName: Optimistic
+  songName: Brainless
   yourBestScore: {fileID: 1962885377}
   yourBestGrade: {fileID: 1755298757}
   yourBestCombo: {fileID: 1011562471}
   yourBestAccuracy: {fileID: 773772029}
-  levelFilename: Optimistic
+  levelFilename: Brainless
   songScene:
     sceneAsset: {fileID: 102900000, guid: e5ed6b8bafef2cc4fa8310eb8cb47377, type: 3}
     sceneName: Scenes/SongLevel

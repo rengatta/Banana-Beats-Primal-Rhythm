@@ -109,12 +109,13 @@ public class SliderManager : MonoBehaviour
         activeSliders.Clear();
     }
 
-    public void PlayLevelDebug(float debugStartTime = 0.0f) {
+    public void PlayLevelDebug(float debugStartTime = 0.0f, float preTime = 3.0f) {
         float songStartTime = debugStartTime * audioSource.clip.length;
-        PlayLevelAtTime(songStartTime);
+        PlayLevelAtTime(songStartTime, preTime);
+        
     }
 
-    public void PlayLevelRegular() {
+    public void PlayLevelRegular(float preTime = 3.0f) {
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
         double spawnPosition;
@@ -124,19 +125,19 @@ public class SliderManager : MonoBehaviour
             switch (currentLevel.sliderSpawns[i])
             {
                 case LevelSliderType.LeftSlider:
-                    spawnPosition = currentLevel.hitTimes[i] * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
                     SpawnLeft((float)speed, -(float)spawnPosition);
                     break;
                 case LevelSliderType.RightSlider:
-                    spawnPosition = currentLevel.hitTimes[i] * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
                     SpawnRight((float)speed, (float)spawnPosition);
                     break;
                 case LevelSliderType.LeftHoldSlider:
-                    spawnPosition = currentLevel.hitTimes[i] * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
                     SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i]- currentLevel.hitTimes[i]));
                     break;
                 case LevelSliderType.RightHoldSlider:
-                    spawnPosition = currentLevel.hitTimes[i] * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
                     SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
                     break;
                 default:
@@ -147,7 +148,7 @@ public class SliderManager : MonoBehaviour
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
     }
 
-    public void PlayLevelAtTime(float time)
+    public void PlayLevelAtTime(float time, float preTime = 3.0f)
     {
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
@@ -161,22 +162,22 @@ public class SliderManager : MonoBehaviour
             {
                 case LevelSliderType.LeftSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed - time * speed;
                     SpawnLeft((float)speed, -(float)spawnPosition);
                     break;
                 case LevelSliderType.RightSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed - time * speed;
                     SpawnRight((float)speed, (float)spawnPosition);
                     break;
                 case LevelSliderType.LeftHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed - time * speed;
                     SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
                     break;
                 case LevelSliderType.RightHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
+                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed - time * speed;
                     SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
                     break;
                 default:
