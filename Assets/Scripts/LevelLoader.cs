@@ -23,8 +23,12 @@ public class LevelLoader : MonoBehaviour
         songStarted = false;
         StopAllCoroutines();
         LoadLevel(levelName);
-        
+
+        audioSource.time = debugStartTime * audioSource.clip.length;
+        audioSource.Play();
+        songStarted = true;
         sliderManager.PlayLevelDebug(debugStartTime);
+       
     }
 
     public void InitializeLevel2(string levelName)
