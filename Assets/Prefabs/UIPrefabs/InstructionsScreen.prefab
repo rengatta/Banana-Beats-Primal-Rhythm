@@ -366,7 +366,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2737272380575303845}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -803, y: -374.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -442,13 +442,35 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "-The objective of the game is to press the specified key whenever a note
-    hits the center of the triangle \n\n-You will be given more points for notes
-    in the direct center of the triangle less points for notes outside of the center\n\n-Try
-    to obtain the highest scores and combos possible\n\n-USE THE A KEY TO RECIEVE
-    NOTES COMING FROM THE LEFT SIDE OF THE SCREEN\n\n-USE THE L KEY TO RECIEVE NOTES
-    COMING FROM THE RIGHT SIDE OF THE SCREEN\n\n-ESC AND P to access the pause menu
-    in-game\n"
+  m_text: '-The objective of the game is to press the specified key whenever a note
+    hits the center of the triangle.
+
+
+    -Failing to press the key at the right
+    time will cause you to lose banana health points. When your screen is filled
+    with banana peels, you will fail the level immediately.
+
+
+    -You will be given
+    more points for notes in the direct center of the triangle less points for notes
+    outside of the center.
+
+
+    -Try to obtain the highest scores and combos possible.
+
+
+    -USE
+    THE A KEY TO RECIEVE NOTES COMING FROM THE LEFT SIDE OF THE SCREEN.
+
+
+    -USE
+    THE L KEY TO RECIEVE NOTES COMING FROM THE RIGHT SIDE OF THE SCREEN.
+
+
+    -ESC
+    AND P to access the pause menu in-game.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -475,8 +497,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23
-  m_fontSizeBase: 23
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
