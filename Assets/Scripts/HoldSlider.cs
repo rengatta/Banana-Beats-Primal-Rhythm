@@ -170,9 +170,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
         if(endSliderFailBoxScript != null) Destroy(endSliderFailBoxScript.gameObject);
         if(endSliderCompletion.gameObject != null) Destroy(endSliderCompletion.gameObject);
-        GlobalHelper.global.hitScoreText.text = "FAIL";
-        GlobalHelper.global.scoreManager.combo = 0;
-        GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+        GlobalHelper.global.FailHit();
         Destroy(this.gameObject);
 
     }

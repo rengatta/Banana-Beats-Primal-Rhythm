@@ -70,4 +70,13 @@ public class Global : MonoBehaviour
     public AudioClip currentAudioClip;
     public AudioSource audioSource;
     public WhiteTriangle whiteTriangle;
+
+
+    public void FailHit() {
+        scoreManager.combo = 0;
+        hitScoreText.text = "FAIL";
+        smileys.ActivateSmiley(Smiley.Angry);
+        whiteTriangle.healthUI.ChangeHP(-1);
+
+    }
 }

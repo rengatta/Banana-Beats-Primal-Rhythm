@@ -22,11 +22,9 @@ public class InactiveSliderRegion : MonoBehaviour
 
             if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.RightSlider && sliderRegion == SliderRegion.Right)
             {
-              
 
-                GlobalHelper.global.scoreManager.combo = 0;
-                GlobalHelper.global.hitScoreText.text = "FAIL";
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+
+                GlobalHelper.global.FailHit();
 
                 sliderInterface.Darken();
 
@@ -35,9 +33,7 @@ public class InactiveSliderRegion : MonoBehaviour
             else if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.LeftSlider && sliderRegion == SliderRegion.Left)
             {
 
-                GlobalHelper.global.scoreManager.combo = 0;
-                GlobalHelper.global.hitScoreText.text = "FAIL";
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Angry);
+                GlobalHelper.global.FailHit();
                 sliderInterface.Darken();
 
                 //  Destroy(collision.gameObject);

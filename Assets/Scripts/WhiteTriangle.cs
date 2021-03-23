@@ -7,6 +7,7 @@ public class WhiteTriangle : MonoBehaviour
 {
 
     public BoxCollider2D triangleRegion;
+    public HealthUI healthUI;
 
     public void DetectHit() {
         //detects if the endslider is within the starting area of where the player "clicks" the hold slider
@@ -72,31 +73,24 @@ public class WhiteTriangle : MonoBehaviour
                 rightScript.DetectHit();
             if (foundleft && foundright) return;
 
-            if (foundleft)
-            {
-                if (Input.GetKeyDown(KeyCode.L))
-                {
-                    GlobalHelper.global.hitScoreText.text = "MISS";
-                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+            if (foundleft) {
+
+                if (Input.GetKeyDown(KeyCode.L)) {
+                    Miss();
                 }
             }
-            else if (foundright)
-            {
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    GlobalHelper.global.hitScoreText.text = "MISS";
-                    GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+            else if (foundright) {
+
+                if (Input.GetKeyDown(KeyCode.A)) {
+                    Miss();
                 }
 
             }
 
         }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown(KeyCode.A))
-            {
-                GlobalHelper.global.hitScoreText.text = "MISS";
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+        else {
+            if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown(KeyCode.A)) {
+                Miss();
             }
         }
 
@@ -104,6 +98,11 @@ public class WhiteTriangle : MonoBehaviour
 
     }
 
+
+    void Miss() {
+        GlobalHelper.global.hitScoreText.text = "MISS";
+        GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+    }
 
     private void Update()
     {
