@@ -70,12 +70,13 @@ public class Global : MonoBehaviour
     public AudioClip currentAudioClip;
     public AudioSource audioSource;
     public WhiteTriangle whiteTriangle;
-
+    public bool inCharter = false;
 
     public void FailHit() {
         scoreManager.combo = 0;
         hitScoreText.text = "FAIL";
         smileys.ActivateSmiley(Smiley.Angry);
+        if(whiteTriangle.healthUI != null && !inCharter)
         whiteTriangle.healthUI.ChangeHP(-1);
 
     }
