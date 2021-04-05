@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using TMPro;
 
 //hitscore for slider hit accuracy
@@ -100,6 +101,20 @@ public class SliderManager : MonoBehaviour
     public AudioSource audioSource;
 
 
+    float currentSongTime = 0.0f;
+    class SpawnData{
+        public float spawnTime = 0.0f;
+        public float holdSliderEndPosition = 0.0f;
+        public LevelSliderType sliderType = LevelSliderType.LeftSlider;
+        public SpawnData(float spawnTime,LevelSliderType sliderType, float holdSliderEndPosition = 0.0f) {
+            this.spawnTime = spawnTime;
+
+            this.sliderType = sliderType;
+            this.holdSliderEndPosition = holdSliderEndPosition;
+        }
+    }
+
+
 
     public void DestroyActiveSliders() {
         for(int i=0; i < activeSliders.Count; i++) {
@@ -111,84 +126,165 @@ public class SliderManager : MonoBehaviour
 
     public void PlayLevelDebug(float debugStartTime = 0.0f) {
         float songStartTime = debugStartTime * audioSource.clip.length;
+        currentSongTime = songStartTime;
         PlayLevelAtTime(songStartTime);
-        
+    }
+
+    IEnumerator TimedSpawner(float speed, Queue<SpawnData> spawnData, float spawnBuffer) {
+
+        float spawnPosition;
+        while (spawnData.Count != 0) {
+
+            if(currentSongTime >= spawnData.Peek().spawnTime - spawnBuffer ) {
+            
+                switch (spawnData.Peek().sliderType)
+                {
+                    case LevelSliderType.LeftSlider:
+                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        SpawnLeft(speed, -spawnPosition);
+                        spawnData.Dequeue();
+                        break;
+                    case LevelSliderType.RightSlider:
+                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        SpawnRight(speed, spawnPosition);
+                        spawnData.Dequeue();
+                        break;
+                    case LevelSliderType.LeftHoldSlider:
+                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        SpawnLeftHold(speed, -spawnPosition, spawnData.Peek().holdSliderEndPosition);
+                        spawnData.Dequeue();
+                        break;
+                    case LevelSliderType.RightHoldSlider:
+                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        SpawnRightHold(speed, spawnPosition, spawnData.Peek().holdSliderEndPosition);
+                        spawnData.Dequeue();
+                        break;
+                }
+
+            }
+
+            
+            currentSongTime += Time.deltaTime;
+            yield return null;
+
+        }
+
+
     }
 
     public void PlayLevelRegular(float preTime = 3.0f) {
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
-        double spawnPosition;
+        double spawnTime;
+        double endSliderLength;
+        float spawnBuffer = 10.0f;
+        currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
+        List<SpawnData> spawnData = new List<SpawnData>();
+        Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
+
         for (int i=0; i < currentLevel.hitTimes.Count; i++) {
             switch (currentLevel.sliderSpawns[i])
             {
                 case LevelSliderType.LeftSlider:
-                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
-                    SpawnLeft((float)speed, -(float)spawnPosition);
+                    spawnTime = (currentLevel.hitTimes[i] + preTime);
+                    spawnData.Add(new SpawnData((float)spawnTime,LevelSliderType.LeftSlider));
                     break;
                 case LevelSliderType.RightSlider:
-                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
-                    SpawnRight((float)speed, (float)spawnPosition);
+                    spawnTime = (currentLevel.hitTimes[i] + preTime);
+                    spawnData.Add(new SpawnData((float)spawnTime,LevelSliderType.RightSlider));
                     break;
                 case LevelSliderType.LeftHoldSlider:
-                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
-                    SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i]- currentLevel.hitTimes[i]));
+                    spawnTime = (currentLevel.hitTimes[i] + preTime);
+                    endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftHoldSlider, (float)endSliderLength));
                     break;
                 case LevelSliderType.RightHoldSlider:
-                    spawnPosition = (currentLevel.hitTimes[i] + preTime) * speed;
-                    SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
+                    spawnTime = (currentLevel.hitTimes[i] + preTime);
+                    endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightHoldSlider, (float)endSliderLength));
                     break;
                 default:
                     break;
             }
         }
+
+        spawnData = spawnData.OrderBy(data => data.spawnTime).ToList();
+
+        for (int i=0; i < spawnData.Count; i++ ) {
+            spawnDataQueue.Enqueue(spawnData[i]);
+        }
+
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
+        StopAllCoroutines();
+        StartCoroutine(TimedSpawner((float)speed, spawnDataQueue, spawnBuffer));
     }
 
     public void PlayLevelAtTime(float time)
     {
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
-        double spawnPosition;
+        double spawnTime;
+        double endSliderLength;
         float offsetTime = time - 2f;
+        float spawnBuffer = 10.0f;
+        currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
+        List<SpawnData> spawnData = new List<SpawnData>();
+        Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
+
+        currentSongTime = time;
+
         for (int i = 0; i < currentLevel.hitTimes.Count; i++)
         {
             switch (currentLevel.sliderSpawns[i])
             {
                 case LevelSliderType.LeftSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
-                    SpawnLeft((float)speed, -(float)spawnPosition);
+                    spawnTime = (currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftSlider));
                     break;
                 case LevelSliderType.RightSlider:
-                    if (currentLevel.hitTimes[i]  < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i]  * speed - time * speed;
-                    SpawnRight((float)speed, (float)spawnPosition);
+                    if (currentLevel.hitTimes[i] < offsetTime) break;
+                    spawnTime = (currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightSlider));
                     break;
                 case LevelSliderType.LeftHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
-                    SpawnLeftHold((float)speed, -(float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
+                    spawnTime = (currentLevel.hitTimes[i]);
+                    endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftHoldSlider, (float)endSliderLength));
                     break;
                 case LevelSliderType.RightHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
-                    spawnPosition = currentLevel.hitTimes[i] * speed - time * speed;
-                    SpawnRightHold((float)speed, (float)spawnPosition, (float)(currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]));
+                    spawnTime = (currentLevel.hitTimes[i]);
+                    endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
+                    spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightHoldSlider, (float)endSliderLength));
                     break;
                 default:
                     break;
             }
         }
+
+
+        spawnData = spawnData.OrderBy(data => data.spawnTime).ToList();
+
+        for (int i = 0; i < spawnData.Count; i++)
+        {
+            spawnDataQueue.Enqueue(spawnData[i]);
+        }
+
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
-
+        StopAllCoroutines();
+        StartCoroutine(TimedSpawner((float)speed, spawnDataQueue, spawnBuffer));
     }
 
+
+ 
 
 
     void SpawnRight(float speed, float positionx) {
