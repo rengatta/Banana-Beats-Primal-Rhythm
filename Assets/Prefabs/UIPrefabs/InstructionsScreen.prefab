@@ -167,7 +167,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.65
+  m_fontSize: 60.5
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58.5
+  m_fontSize: 72
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -411,8 +411,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 815, y: 304}
-  m_SizeDelta: {x: 1087.8939, y: 420.1132}
+  m_AnchoredPosition: {x: 805.048, y: 304}
+  m_SizeDelta: {x: 1067.9899, y: 420.1132}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2737272381299022235
 CanvasRenderer:
@@ -446,29 +446,34 @@ MonoBehaviour:
     hits the center of the triangle.
 
 
-    -Failing to press the key at the right
-    time will cause you to lose banana health points. When your screen is filled
-    with banana peels, you will fail the level immediately.
+    -There are special hold notes that require
+    you to hold a key at the start of the note and release it at the end of the hold
+    note
 
 
-    -You will be given
-    more points for notes in the direct center of the triangle less points for notes
-    outside of the center.
+    -Failing to press the key at the right time will cause you to lose
+    banana health points. When your screen is filled with banana peels, you will
+    fail the level immediately.
 
 
-    -Try to obtain the highest scores and combos possible.
+    -You will be given more points for notes in
+    the direct center of the triangle less points for notes outside of the center.
 
 
-    -USE
-    THE A KEY TO RECIEVE NOTES COMING FROM THE LEFT SIDE OF THE SCREEN.
+    -Try
+    to obtain the highest scores and combos possible.
 
 
-    -USE
-    THE L KEY TO RECIEVE NOTES COMING FROM THE RIGHT SIDE OF THE SCREEN.
+    -USE THE A KEY TO RECIEVE
+    NOTES COMING FROM THE LEFT SIDE OF THE SCREEN.
 
 
-    -ESC
-    AND P to access the pause menu in-game.
+    -USE THE L KEY TO RECIEVE
+    NOTES COMING FROM THE RIGHT SIDE OF THE SCREEN.
+
+
+    -ESC AND P to access the
+    pause menu in-game.
 
 '
   m_isRightToLeft: 0

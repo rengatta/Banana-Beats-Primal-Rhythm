@@ -64,6 +64,7 @@ public class RecordManager : MonoBehaviour
             audioManager.ResetTimescale();
             audioManager.playtestPaused = true;
             sliderManager.PlayLevelRegular();
+            GlobalHelper.global.audioSource.Stop();
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
             StartCoroutine(PreTimeWait());
             
