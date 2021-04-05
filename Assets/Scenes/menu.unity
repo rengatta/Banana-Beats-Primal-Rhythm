@@ -1893,6 +1893,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: optionsRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 2594628839475713795, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895933451299817228, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895933451299817228, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5343611129538943661, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
@@ -1908,6 +1920,18 @@ PrefabInstance:
     - target: {fileID: 5343611129538943661, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660626287184355231, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660626287184355231, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660626287184355231, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6706830846598157733, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
       propertyPath: m_Pivot.x
@@ -1991,6 +2015,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6706830846598157733, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781662424644253561, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
