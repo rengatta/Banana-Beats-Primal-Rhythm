@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/menu.unity
     guid: c59639695ee88704eadcfb74d4e27aeb
   - enabled: 1
-    path: Assets/Scenes/GameplayPrototype.unity
-    guid: fa51af6305f7db6439717e591d313c96
-  - enabled: 1
     path: Assets/Scenes/SongLevel.unity
     guid: e5ed6b8bafef2cc4fa8310eb8cb47377
   - enabled: 1

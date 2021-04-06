@@ -64,7 +64,7 @@ public class RegularSlider : MonoBehaviour, SliderInterface
             if (hitScore == HitScore.Perfect)
             {
                 GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += score*1.5f;
+                GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore* SceneToSceneData.perfectMultiplier;
 
                 GlobalHelper.global.scoreManager.combo += 1;
 
@@ -76,7 +76,7 @@ public class RegularSlider : MonoBehaviour, SliderInterface
             else if (hitScore == HitScore.Good)
             {
                 GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += score;
+                GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "GOOD";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);

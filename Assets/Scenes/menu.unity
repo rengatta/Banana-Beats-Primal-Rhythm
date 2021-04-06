@@ -888,6 +888,14 @@ MonoBehaviour:
   level1:
     sceneAsset: {fileID: 102900000, guid: a03fb60b317babe49809bbe427122fb1, type: 3}
     sceneName: Scenes/LevelSelectMenu
+  songLoader:
+  - {fileID: 8300000, guid: 6136d13971fbadf4296d613b4f73c0bc, type: 3}
+  - {fileID: 8300000, guid: b0a7a36f73179a34ebee7c7e0bcfc272, type: 3}
+  - {fileID: 8300000, guid: b0d9d8f7e16fa0d45af771e3c23efc45, type: 3}
+  - {fileID: 8300000, guid: 543ddefe6c1515b4bad62b9109844ea3, type: 3}
+  - {fileID: 8300000, guid: f9b5d7188b84271419daae714e3b5324, type: 3}
+  - {fileID: 8300000, guid: 8d7cfaa517ddae3479d9b150671b1ed9, type: 3}
+  - {fileID: 8300000, guid: 99de62b6c35ed1c4582a5ffa5d868ef3, type: 3}
 --- !u!4 &423647779
 Transform:
   m_ObjectHideFlags: 0
@@ -2739,11 +2747,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96

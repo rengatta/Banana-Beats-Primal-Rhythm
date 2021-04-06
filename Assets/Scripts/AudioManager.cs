@@ -23,6 +23,8 @@ public class AudioManager : MonoBehaviour
     public Slider volumeSlider;
     public Slider timeScaleSlider;
     float tempTimeScale = 1f;
+
+ 
     public void OnVolumeChanged()
     {
         audioSource.volume = volumeSlider.value;

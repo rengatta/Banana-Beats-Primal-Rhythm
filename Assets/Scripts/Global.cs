@@ -52,7 +52,10 @@ public static class SceneToSceneData
     {
 
     }
-
+    public static float holdSliderScore = 5f;
+    public static float holdSliderHoldScore = 0.1f;
+    public static float sliderScore = 10f;
+    public static float perfectMultiplier = 1.2f;
     public static float maxPossibleScore = 1f;
     public static int maxPossibleCombo = 1;
     public static float currentScore = 0f;

@@ -54,7 +54,7 @@ MonoBehaviour:
   optionsRoot: {fileID: 4209452035089967685}
   instructionsRoot: {fileID: 6071786327221177839}
   audioSource: {fileID: 0}
-  audioSlider: {fileID: 1872761313482816973}
+  audioSlider: {fileID: 0}
   levelSelectScene:
     sceneAsset: {fileID: 102900000, guid: a03fb60b317babe49809bbe427122fb1, type: 3}
     sceneName: Scenes/LevelSelectMenu
@@ -1030,11 +1030,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -4111,6 +4111,11 @@ PrefabInstance:
       objectReference: {fileID: 3291678815449385184}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+--- !u!224 &4861759366546041059 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6706830846598157733, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
+  m_PrefabInstance: {fileID: 2191849476878646598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4644985239745251903 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6781662424644253561, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
@@ -4122,22 +4127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1872761313482816973 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 546731068024586379, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
-  m_PrefabInstance: {fileID: 2191849476878646598}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!224 &4861759366546041059 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6706830846598157733, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}
-  m_PrefabInstance: {fileID: 2191849476878646598}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4209452035089967685 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2594628839475713795, guid: ba200e6cdc6f9984ca9370ee47bb8729, type: 3}

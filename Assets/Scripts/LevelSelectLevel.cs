@@ -27,8 +27,7 @@ public class LevelSelectLevel : MonoBehaviour
     }
     void FillPerformanceData() {
 
-        //string path = Application.dataPath + "\\LevelSaves\\" + levelName;
-        string path = Application.dataPath + "\\PlayerPerformanceData\\" + levelFilename + ".playerdata";
+        string path = Application.streamingAssetsPath + "\\PlayerPerformanceData\\" + levelFilename + ".txt";
 
         if (!File.Exists(path))
         {

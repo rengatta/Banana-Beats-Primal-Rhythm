@@ -30,8 +30,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
     [HideInInspector]
     public float score { get; set; } = 5f;
-    [HideInInspector]
-    public float holdScore = 0.1f;
+
 
   
 
@@ -66,7 +65,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
             if (hitScore == HitScore.Perfect)
             {
                 GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += score*1.5f;
+                GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "PERFECT";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
@@ -75,7 +74,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
             else if (hitScore == HitScore.Good)
             {
                 GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += score;
+                GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore;
                 GlobalHelper.global.scoreManager.combo += 1;
                 GlobalHelper.global.hitScoreText.text = "GOOD";
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
@@ -111,7 +110,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
         while (true)
         {
-            GlobalHelper.global.scoreManager.score += holdScore * Time.deltaTime;
+            GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderHoldScore * Time.deltaTime;
 
             //detects if the player lets go of a hold in order to "catch" the end slider
             if (Input.GetKeyUp(clickKey))
@@ -141,7 +140,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
                     GlobalHelper.global.scoreManager.totalHits += 1;
                     GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
                     GlobalHelper.global.hitScoreText.text = "PERFECT";
-                    GlobalHelper.global.scoreManager.score += score * 1.5f;
+                    GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
                     GlobalHelper.global.scoreManager.combo += 1;
                     Destroy(this.gameObject);
                 }

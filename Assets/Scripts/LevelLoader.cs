@@ -65,6 +65,7 @@ public class LevelLoader : MonoBehaviour
             if (SceneToSceneData.nextLevelName == "nolevel")
             {
                 InitializeLevel(debugLevelName);
+                //InitializeLevel2(debugLevelName);
 
             }
             else
@@ -105,22 +106,14 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(string levelName)
     {
-        //string path = Application.dataPath + "\\LevelSaves\\" + levelName;
-        string path = Application.dataPath + "\\LevelSaves\\" + levelName;
 
-        if (!File.Exists(path))
-        {
-            Debug.Log("FILE DOES NOT EXIST.");
-            return;
-        }
-        else
-        {
-       
-            string readText = File.ReadAllText(path);
-            GlobalHelper.global.currentLevel = JsonUtility.FromJson<LevelData>(readText);
-            GlobalHelper.global.currentAudioClip = Resources.Load<AudioClip>("Audio\\" + GlobalHelper.global.currentLevel.audioClipName);
-            GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
-        }
+
+        TextAsset mydata = Resources.Load<TextAsset>("LevelSaves\\" + levelName);
+        string readText = mydata.text;
+        GlobalHelper.global.currentLevel = JsonUtility.FromJson<LevelData>(readText);
+        GlobalHelper.global.currentAudioClip = Resources.Load<AudioClip>("Audio\\" + GlobalHelper.global.currentLevel.audioClipName);
+        GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
+        
 
 
     }

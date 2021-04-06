@@ -1,25 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
+using UnityEditor;
 
-[CustomEditor(typeof(HealthUI))]
-public class customButton : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
 
-        HealthUI myScript = (HealthUI)target;
-        if (GUILayout.Button("Apply Changes"))
-        {
-            myScript.ValidateFunction();
-        }
-    }
-
-}
 
 
 public class HealthUI : MonoBehaviour
@@ -39,24 +25,26 @@ public class HealthUI : MonoBehaviour
 
     public SceneField levelFailScene;
 
-    public void ValidateFunction() {
+    public void ValidateFunction()
+    {
 
 
         if (currentHealth < 0) currentHealth = 0;
         foreach (Transform child in healthUIHolder.transform)
         {
-            
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
+
+            //UnityEditor.EditorApplication.delayCall += () =>
+            //{
                 DestroyImmediate(child.gameObject);
-            };
+            //};
         }
 
         int numHit = maxHealth - currentHealth;
         int fullHealthPart = 0;
         int halfHealthPart = 0;
         int noneHealthPart = 0;
-        if (currentHealth > maxHealth / 2) {
+        if (currentHealth > maxHealth / 2)
+        {
             fullHealthPart = (maxHealth / 2) - numHit;
             halfHealthPart = (maxHealth / 2) - fullHealthPart;
             for (int i = 0; i < fullHealthPart; i++)
@@ -69,7 +57,8 @@ public class HealthUI : MonoBehaviour
                 Instantiate(healthPartHalfPrefab, healthUIHolder.transform);
             }
         }
-        else {
+        else
+        {
             noneHealthPart = (maxHealth / 2) - currentHealth;
             halfHealthPart = currentHealth;
             for (int i = 0; i < halfHealthPart; i++)
@@ -81,11 +70,8 @@ public class HealthUI : MonoBehaviour
                 Instantiate(healthPartNonePrefab, healthUIHolder.transform);
             }
         }
-
-
-
-
     }
+
     public void GameOver() {
         SceneManager.LoadScene(levelFailScene);
     }

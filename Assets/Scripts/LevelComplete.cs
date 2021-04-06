@@ -45,8 +45,10 @@ public class LevelComplete : MonoBehaviour
     public void OverwritePerformanceData()
     {
         PerformanceSaveData previousSave;
-        //string path = Application.dataPath + "\\LevelSaves\\" + levelName;
-        string path = Application.dataPath + "\\PlayerPerformanceData\\" + SceneToSceneData.nextLevelName + ".playerdata";
+        string path = Application.streamingAssetsPath + "\\PlayerPerformanceData\\" + SceneToSceneData.nextLevelName + ".txt";
+
+
+
 
         if (path.Length == 0)
         {
@@ -87,7 +89,7 @@ public class LevelComplete : MonoBehaviour
     public void SaveNewLevel()
     {
 
-        string path = Application.dataPath + "\\PlayerPerformanceData\\" + SceneToSceneData.nextLevelName + ".playerdata";
+        string path = Application.streamingAssetsPath + "\\PlayerPerformanceData\\" + SceneToSceneData.nextLevelName + ".txt";
 
         PerformanceSaveData newSave = new PerformanceSaveData();
         newSave.levelName = SceneToSceneData.nextLevelName;

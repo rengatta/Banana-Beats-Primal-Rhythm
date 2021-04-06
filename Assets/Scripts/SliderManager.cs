@@ -126,7 +126,6 @@ public class SliderManager : MonoBehaviour
 
     public void PlayLevelDebug(float debugStartTime = 0.0f) {
         float songStartTime = debugStartTime * audioSource.clip.length;
-        currentSongTime = songStartTime;
         PlayLevelAtTime(songStartTime);
     }
 
@@ -177,33 +176,44 @@ public class SliderManager : MonoBehaviour
         double speed = currentLevel.sliderSpeed;
         double spawnTime;
         double endSliderLength;
-        float spawnBuffer = 10.0f;
+        float spawnBuffer = 5.0f;
         currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
         List<SpawnData> spawnData = new List<SpawnData>();
         Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
 
+ 
         for (int i=0; i < currentLevel.hitTimes.Count; i++) {
             switch (currentLevel.sliderSpawns[i])
             {
                 case LevelSliderType.LeftSlider:
                     spawnTime = (currentLevel.hitTimes[i] + preTime);
                     spawnData.Add(new SpawnData((float)spawnTime,LevelSliderType.LeftSlider));
+                    totalScore += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
+                    totalCombo += 1;
                     break;
                 case LevelSliderType.RightSlider:
                     spawnTime = (currentLevel.hitTimes[i] + preTime);
                     spawnData.Add(new SpawnData((float)spawnTime,LevelSliderType.RightSlider));
+                    totalScore += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
+                    totalCombo += 1;
                     break;
                 case LevelSliderType.LeftHoldSlider:
                     spawnTime = (currentLevel.hitTimes[i] + preTime);
                     endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftHoldSlider, (float)endSliderLength));
+                    totalScore += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier * 2;
+                    totalScore += SceneToSceneData.holdSliderHoldScore * (float)endSliderLength;
+                    totalCombo += 2;
                     break;
                 case LevelSliderType.RightHoldSlider:
                     spawnTime = (currentLevel.hitTimes[i] + preTime);
                     endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightHoldSlider, (float)endSliderLength));
+                    totalScore += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier * 2;
+                    totalScore += SceneToSceneData.holdSliderHoldScore * (float)endSliderLength;
+                    totalCombo += 2;
                     break;
                 default:
                     break;
@@ -229,15 +239,15 @@ public class SliderManager : MonoBehaviour
         double spawnTime;
         double endSliderLength;
         float offsetTime = time - 2f;
-        float spawnBuffer = 10.0f;
+        float spawnBuffer = 5.0f;
         currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
         List<SpawnData> spawnData = new List<SpawnData>();
         Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
 
-        currentSongTime = time;
 
+        currentSongTime = time;
         for (int i = 0; i < currentLevel.hitTimes.Count; i++)
         {
             switch (currentLevel.sliderSpawns[i])
@@ -246,23 +256,33 @@ public class SliderManager : MonoBehaviour
                     if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnTime = (currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftSlider));
+                    totalScore += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
+                    totalCombo += 1;
                     break;
                 case LevelSliderType.RightSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnTime = (currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightSlider));
+                    totalScore += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
+                    totalCombo += 1;
                     break;
                 case LevelSliderType.LeftHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnTime = (currentLevel.hitTimes[i]);
                     endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.LeftHoldSlider, (float)endSliderLength));
+                    totalScore += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier * 2;
+                    totalScore += SceneToSceneData.holdSliderHoldScore * (float)endSliderLength;
+                    totalCombo += 2;
                     break;
                 case LevelSliderType.RightHoldSlider:
                     if (currentLevel.hitTimes[i] < offsetTime) break;
                     spawnTime = (currentLevel.hitTimes[i]);
                     endSliderLength = (currentLevel.holdSliderEndTimes[i] - currentLevel.hitTimes[i]);
                     spawnData.Add(new SpawnData((float)spawnTime,  LevelSliderType.RightHoldSlider, (float)endSliderLength));
+                    totalScore += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier * 2;
+                    totalScore += SceneToSceneData.holdSliderHoldScore * (float)endSliderLength;
+                    totalCombo += 2;
                     break;
                 default:
                     break;
@@ -279,6 +299,8 @@ public class SliderManager : MonoBehaviour
 
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
+
+
         StopAllCoroutines();
         StartCoroutine(TimedSpawner((float)speed, spawnDataQueue, spawnBuffer));
     }
@@ -306,7 +328,6 @@ public class SliderManager : MonoBehaviour
         GameObject sliderInstance = Instantiate(rightHoldSliderPrefab);
         sliderInstance.transform.position = new Vector3(positionx, sliderSpawnArea.position.y, 0f);
         HoldSlider holdSliderScript = sliderInstance.GetComponent<HoldSlider>();
-        holdSliderScript.holdScore = holdSliderHoldScore;
         holdSliderScript.Initialize(length);
 
 
@@ -326,7 +347,6 @@ public class SliderManager : MonoBehaviour
         sliderInstance.transform.position = new Vector3(positionx, leftSliderSpawnArea.position.y, 0f);
 
         HoldSlider holdSliderScript = sliderInstance.GetComponent<HoldSlider>();
-        holdSliderScript.holdScore = holdSliderHoldScore;
         holdSliderScript.Initialize(length);
 
         SliderInterface sliderScript = sliderInstance.GetComponent<SliderInterface>();

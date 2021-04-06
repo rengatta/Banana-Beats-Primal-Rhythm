@@ -1,3 +1,4 @@
+#if (UNITY_EDITOR) 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -137,8 +138,7 @@ public class RecordManager : MonoBehaviour
     }
 
     public void LoadLevel() {
-        //string path = Application.dataPath + "\\LevelSaves\\" + levelName;
-        string path = EditorUtility.OpenFilePanel("Select a level file", Application.dataPath + "\\LevelSaves\\", "");
+        string path = EditorUtility.OpenFilePanel("Select a level file", Application.dataPath + "\\Resources\\LevelSaves\\", "txt");
 
         if (path.Length == 0) {
             Debug.Log("File failed to load.");
@@ -210,7 +210,7 @@ public class RecordManager : MonoBehaviour
 
     public void SaveLevel() {
 
-        string path = EditorUtility.SaveFilePanel("Select a filename to save", Application.dataPath + "\\LevelSaves\\", GlobalHelper.global.currentLevel.levelName, "");
+        string path = EditorUtility.SaveFilePanel("Select a filename to save", Application.dataPath + "\\Resources\\LevelSaves\\", GlobalHelper.global.currentLevel.levelName, "txt");
         string levelname =  Path.GetFileNameWithoutExtension(path);
 
         if (path.Length == 0)
@@ -308,3 +308,4 @@ public class RecordManager : MonoBehaviour
 
 
 }
+#endif
