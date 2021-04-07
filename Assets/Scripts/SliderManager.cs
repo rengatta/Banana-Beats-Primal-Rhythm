@@ -129,36 +129,37 @@ public class SliderManager : MonoBehaviour
         PlayLevelAtTime(songStartTime);
     }
 
-    IEnumerator TimedSpawner(float speed, Queue<SpawnData> spawnData, float spawnBuffer) {
+    IEnumerator TimedSpawner(float speed, List<SpawnData> spawnData, float spawnBuffer) {
 
         float spawnPosition;
-        while (spawnData.Count != 0) {
+        while (spawnData.Count > 0) {
 
-            if(currentSongTime >= spawnData.Peek().spawnTime - spawnBuffer ) {
+            while(currentSongTime >= spawnData[spawnData.Count-1].spawnTime - spawnBuffer ) {
             
-                switch (spawnData.Peek().sliderType)
+                switch (spawnData[spawnData.Count - 1].sliderType)
                 {
                     case LevelSliderType.LeftSlider:
-                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        spawnPosition = (spawnData[spawnData.Count - 1].spawnTime - currentSongTime) * speed;
                         SpawnLeft(speed, -spawnPosition);
-                        spawnData.Dequeue();
+                        spawnData.RemoveAt(spawnData.Count - 1);
                         break;
                     case LevelSliderType.RightSlider:
-                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
+                        spawnPosition = (spawnData[spawnData.Count - 1].spawnTime - currentSongTime) * speed;
                         SpawnRight(speed, spawnPosition);
-                        spawnData.Dequeue();
+                        spawnData.RemoveAt(spawnData.Count - 1);
                         break;
                     case LevelSliderType.LeftHoldSlider:
-                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
-                        SpawnLeftHold(speed, -spawnPosition, spawnData.Peek().holdSliderEndPosition);
-                        spawnData.Dequeue();
+                        spawnPosition = (spawnData[spawnData.Count - 1].spawnTime - currentSongTime) * speed;
+                        SpawnLeftHold(speed, -spawnPosition, spawnData[spawnData.Count - 1].holdSliderEndPosition);
+                        spawnData.RemoveAt(spawnData.Count - 1);
                         break;
                     case LevelSliderType.RightHoldSlider:
-                        spawnPosition = (spawnData.Peek().spawnTime - currentSongTime) * speed;
-                        SpawnRightHold(speed, spawnPosition, spawnData.Peek().holdSliderEndPosition);
-                        spawnData.Dequeue();
+                        spawnPosition = (spawnData[spawnData.Count - 1].spawnTime - currentSongTime) * speed;
+                        SpawnRightHold(speed, spawnPosition, spawnData[spawnData.Count - 1].holdSliderEndPosition);
+                        spawnData.RemoveAt(spawnData.Count - 1);
                         break;
                 }
+                if (spawnData.Count <= 0) break;
 
             }
 
@@ -176,13 +177,11 @@ public class SliderManager : MonoBehaviour
         double speed = currentLevel.sliderSpeed;
         double spawnTime;
         double endSliderLength;
-        float spawnBuffer = 5.0f;
+        float spawnBuffer = 8.0f;
         currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
-        List<SpawnData> spawnData = new List<SpawnData>();
-        Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
-
+        List<SpawnData> spawnData = new List<SpawnData>(2000);
  
         for (int i=0; i < currentLevel.hitTimes.Count; i++) {
             switch (currentLevel.sliderSpawns[i])
@@ -220,16 +219,13 @@ public class SliderManager : MonoBehaviour
             }
         }
 
-        spawnData = spawnData.OrderBy(data => data.spawnTime).ToList();
+        spawnData = spawnData.OrderByDescending(data => data.spawnTime).ToList();
 
-        for (int i=0; i < spawnData.Count; i++ ) {
-            spawnDataQueue.Enqueue(spawnData[i]);
-        }
 
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
         StopAllCoroutines();
-        StartCoroutine(TimedSpawner((float)speed, spawnDataQueue, spawnBuffer));
+        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer));
     }
 
     public void PlayLevelAtTime(float time)
@@ -239,13 +235,11 @@ public class SliderManager : MonoBehaviour
         double spawnTime;
         double endSliderLength;
         float offsetTime = time - 2f;
-        float spawnBuffer = 5.0f;
+        float spawnBuffer = 8.0f;
         currentSongTime = 0.0f;
         totalScore = 0f;
         totalCombo = 0;
-        List<SpawnData> spawnData = new List<SpawnData>();
-        Queue<SpawnData> spawnDataQueue = new Queue<SpawnData>();
-
+        List<SpawnData> spawnData = new List<SpawnData>(2000);
 
         currentSongTime = time;
         for (int i = 0; i < currentLevel.hitTimes.Count; i++)
@@ -290,19 +284,15 @@ public class SliderManager : MonoBehaviour
         }
 
 
-        spawnData = spawnData.OrderBy(data => data.spawnTime).ToList();
+        spawnData = spawnData.OrderByDescending(data => data.spawnTime).ToList();
 
-        for (int i = 0; i < spawnData.Count; i++)
-        {
-            spawnDataQueue.Enqueue(spawnData[i]);
-        }
 
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
 
 
         StopAllCoroutines();
-        StartCoroutine(TimedSpawner((float)speed, spawnDataQueue, spawnBuffer));
+        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer));
     }
 
 
