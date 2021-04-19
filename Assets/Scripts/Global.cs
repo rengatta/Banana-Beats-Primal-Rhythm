@@ -62,16 +62,25 @@ public static class SceneToSceneData
     public static int currentHighestCombo = 0;
     public static string nextLevelName = "nolevel";
     public static int totalHits = 0;
+    public static bool gameOptionsInit = false;
 }
 
 public class Global : MonoBehaviour
 {
+
+    
     public TextMeshProUGUI hitScoreText;
     public Smileys smileys;
     public ScoreManager scoreManager;
     public LevelData currentLevel;
     public AudioClip currentAudioClip;
     public AudioSource audioSource;
+    public AudioSource effectsAudioSource;
+
+
+
+
+
     public WhiteTriangle whiteTriangle;
     public bool inCharter = false;
 
@@ -83,4 +92,46 @@ public class Global : MonoBehaviour
         whiteTriangle.healthUI.ChangeHP(-1);
 
     }
+
+
+    public void InitializeOptions()
+    {
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+        }
+
+        if (PlayerPrefs.HasKey("MuteToggled"))
+        {
+            int muteToggled = PlayerPrefs.GetInt("MuteToggled");
+            if (muteToggled == 1)
+            {
+                audioSource.mute = true;
+            }
+            else
+            {
+                audioSource.mute = false;
+            }
+        }
+
+        if (PlayerPrefs.HasKey("Fullscreen"))
+        {
+            if (PlayerPrefs.GetInt("Fullscreen") == 1)
+            {
+                Screen.fullScreen = true;
+
+            }
+        }
+
+        if (PlayerPrefs.HasKey("Windowed"))
+        {
+            if (PlayerPrefs.GetInt("Windowed") == 1)
+            {
+                Screen.fullScreen = false;
+
+            }
+        }
+
+    }
+
 }

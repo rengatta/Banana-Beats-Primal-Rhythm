@@ -43,19 +43,6 @@ public class PauseMenu : MonoBehaviour
 
     }
 
-    public void OnVolumeSliderChanged() {
-        
-        audioSource.volume = audioSlider.value;
-
-    }
-
-
-    public void OnMuteToggle() {
-        if (muteToggle.isOn)
-            audioSource.mute = true;
-        else
-            audioSource.mute = false;
-    }
 
     public void OptionsMenuButton() {
         pauseRoot.SetActive(false);

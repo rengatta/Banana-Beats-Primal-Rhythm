@@ -257,6 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6706830846598157733}
+  - component: {fileID: 6400581661046734577}
   m_Layer: 5
   m_Name: optionsRoot
   m_TagString: Untagged
@@ -293,6 +294,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000028014, y: -8.8452}
   m_SizeDelta: {x: 421.3743, y: 449.8755}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6400581661046734577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594628839475713795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2906ba646c4effb43a3fca51cc9128af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 1500836013200041960}
+  volumeChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  muteToggleChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  muteToggle: {fileID: 6781662424644253561}
+  resolutionDropdown: {fileID: 5343611130711912325}
 --- !u!1 &2786771911989930541
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +574,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6400581661046734577}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: SliderSetVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3749559091806628516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,7 +1062,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5343611128863205403}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6400581661046734577}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: SetFullScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5343611129297773065
 GameObject:
   m_ObjectHideFlags: 0
@@ -2270,7 +2316,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5343611130354123785}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6400581661046734577}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: SetWindowed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5343611130361111775
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,7 +2587,7 @@ GameObject:
   - component: {fileID: 5343611130711912326}
   - component: {fileID: 5343611130711912325}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: resolutionDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2652,7 +2710,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6400581661046734577}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: SetResolution
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!1 &5703291745801348249
 GameObject:
@@ -2945,7 +3015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Options (Unfinished)
+  m_text: Options
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 68ea6c6799b28d24cbc0c7e2894ea4f8, type: 2}
   m_sharedMaterial: {fileID: 6043501308883318698, guid: 68ea6c6799b28d24cbc0c7e2894ea4f8, type: 2}
