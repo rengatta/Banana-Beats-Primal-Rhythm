@@ -8,13 +8,20 @@ public class LevelFailureMenu : MonoBehaviour
 
     public SceneField levelSelectScene;
     public SceneField songScene;
+    public SceneLoader sceneLoader;
+
+    private void Start()
+    {
+        GameState.failed = false;
+    }
+
 
     public void LevelSelectButtonPressed() {
-        SceneManager.LoadScene(levelSelectScene);
+        sceneLoader.LoadScene(levelSelectScene);
     }
 
     public void RetryButtonPressed() {
-        SceneManager.LoadScene(songScene);
+        sceneLoader.LoadScene(songScene);
 
     }
 

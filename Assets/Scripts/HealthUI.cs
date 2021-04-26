@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
 using UnityEditor;
-
-
-
+using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
@@ -24,6 +22,10 @@ public class HealthUI : MonoBehaviour
 
 
     public SceneField levelFailScene;
+
+    public FadeInOut fadeInOut;
+
+
 
     public void ValidateFunction()
     {
@@ -72,18 +74,35 @@ public class HealthUI : MonoBehaviour
         }
     }
 
-    public void GameOver() {
+    IEnumerator GameOverCoroutine()
+    {
+
         SceneManager.LoadScene(levelFailScene);
+        yield return null;
+    }
+
+
+    public void GameOver() {
+
+        GameState.failed = true;
+        fadeInOut.FadeOut(GameOverCoroutine());
+
     }
 
     public void ChangeHP(int change) {
 
         
         currentHealth += change;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
         if (currentHealth <= 0) {
             GameOver();
+            
         }
-
+        if (currentHealth < 0)
+        {
+            GameOver();
+            return;
+        }
 
         foreach (Transform child in healthUIHolder.transform)
         {

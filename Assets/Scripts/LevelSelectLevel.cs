@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Utilities;
 using System.IO;
+using UnityEngine.UI;
 
 public class LevelSelectLevel : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class LevelSelectLevel : MonoBehaviour
     public TextMeshProUGUI yourBestAccuracy;
     public string levelFilename = "";
     public SceneField songScene;
+
+
+    public FadeInOut fadeInOut;
+
+
     private void OnValidate()
     {
         songNameText.text = songName;
@@ -52,8 +58,14 @@ public class LevelSelectLevel : MonoBehaviour
 
     public void PlayButtonClicked() {
         SceneToSceneData.nextLevelName = levelFilename;
-        SceneManager.LoadScene(songScene);
+        fadeInOut.FadeOut(LoadLevel());
     }
+
+    IEnumerator LoadLevel() {
+        SceneManager.LoadScene(songScene);
+        yield return null;
+    }
+
 
 
 }

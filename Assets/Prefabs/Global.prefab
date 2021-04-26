@@ -46,3 +46,21 @@ MonoBehaviour:
   hitScoreText: {fileID: 0}
   smileys: {fileID: 0}
   scoreManager: {fileID: 0}
+  currentLevel:
+    levelName: defaultlevelname
+    hitTimes: []
+    sliderSpawns: 
+    holdSliderEndTimes:
+      m_keys: 
+      m_values: []
+    audioClipName: 
+    sliderSpeed: 6
+    regularSliderScore: 10
+    holdSliderScore: 5
+    holdSliderHoldScore: 1
+  currentAudioClip: {fileID: 0}
+  audioSource: {fileID: 0}
+  effectsAudioSource: {fileID: 0}
+  hitScoreTextPrefab: {fileID: 4709901619108487353, guid: 275ee3d2f847a0d49a67af1b5824b09f, type: 3}
+  whiteTriangle: {fileID: 0}
+  inCharter: 0

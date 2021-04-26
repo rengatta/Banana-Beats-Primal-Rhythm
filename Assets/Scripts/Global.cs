@@ -44,6 +44,8 @@ public static class GlobalHelper
 public static class GameState
 {
     public static bool paused = false;
+    public static double songTimeDelta = 0f;
+    public static bool failed = false;
 }
 
 public static class SceneToSceneData
@@ -77,6 +79,8 @@ public class Global : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource effectsAudioSource;
 
+    public GameObject hitScoreTextPrefab;
+
 
 
 
@@ -84,15 +88,75 @@ public class Global : MonoBehaviour
     public WhiteTriangle whiteTriangle;
     public bool inCharter = false;
 
+    public float hitScoreTime;
+
+    float sameTimeDistance = 80f;
+
     public void FailHit() {
         scoreManager.combo = 0;
-        hitScoreText.text = "FAIL";
+
+        SpawnText("FAIL", Color.red + new Color(0.1f, 0.1f, 0.1f));
+        whiteTriangle.ChangeColor(Color.red + new Color(0.1f, 0.1f, 0.1f));
+        //hitScoreText.text = "FAIL";
         smileys.ActivateSmiley(Smiley.Angry);
         if(whiteTriangle.healthUI != null && !inCharter)
         whiteTriangle.healthUI.ChangeHP(-1);
 
     }
+    public void SpawnText(string text, Color color) {
+        float newTime = GlobalHelper.global.audioSource.time;
+        if (Mathf.Abs(newTime - hitScoreTime) < 0.05f)
+        {
+            Instantiate(hitScoreTextPrefab).GetComponent<HitScoreText>().Init(text, GlobalHelper.global.hitScoreText.transform, color, sameTimeDistance);
+        }
+        else
+        {
+            Instantiate(hitScoreTextPrefab).GetComponent<HitScoreText>().Init(text, GlobalHelper.global.hitScoreText.transform, color, 0f);
+        }
+        hitScoreTime = newTime;
 
+    }
+    Color purple = new Color(75f / 255f, 0f / 255f, 130f / 255f);
+
+    public void SpawnGoodText() {
+        if (scoreManager.combo != 0 && scoreManager.combo % 10 ==0) {
+            SpawnText("EXCELLENT", purple + new Color(0.1f, 0.1f, 0.1f));
+            whiteTriangle.ChangeColor(purple + new Color(0.1f, 0.1f, 0.1f));
+            whiteTriangle.healthUI.ChangeHP(1);
+        }
+        SpawnText("GOOD", Color.green + new Color(0.1f, 0.1f, 0.1f));
+       whiteTriangle.ChangeColor(Color.green + new Color(0.1f, 0.1f, 0.1f));
+    }
+
+    public void SpawnPerfectText() {
+        if (scoreManager.combo != 0 && scoreManager.combo % 10 == 0)
+        {
+            SpawnText("EXCELLENT", purple + new Color(0.1f, 0.1f, 0.1f));
+            whiteTriangle.ChangeColor(purple + new Color(0.1f, 0.1f, 0.1f));
+            whiteTriangle.healthUI.ChangeHP(1);
+        }
+
+        SpawnText("PERFECT", Color.cyan + new Color(0.1f, 0.1f, 0.1f));
+        whiteTriangle.ChangeColor(Color.cyan + new Color(0.1f, 0.1f, 0.1f));
+    }
+    public void SpawnMissText() {
+        SpawnText("MISS", Color.yellow + new Color(0.1f, 0.1f, 0.1f));
+        whiteTriangle.ChangeColor(Color.yellow + new Color(0.1f, 0.1f, 0.1f));
+    }
+
+    int missHitCounter = 0;
+    public void MissHit() {
+        scoreManager.combo = 0;
+        scoreManager.score -= 10;
+        missHitCounter++;
+        if(missHitCounter >= 3) {
+            missHitCounter = 0;
+            if (whiteTriangle.healthUI != null && !inCharter)
+                whiteTriangle.healthUI.ChangeHP(-1);
+            SpawnText("YOU'RE SLIPPING", Color.red + new Color(0.1f, 0.1f, 0.1f));
+            whiteTriangle.ChangeColor(Color.red + new Color(0.1f, 0.1f, 0.1f));
+        }
+    }
 
     public void InitializeOptions()
     {

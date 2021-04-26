@@ -32,7 +32,11 @@ public class HoldSlider : MonoBehaviour, SliderInterface
     public float score { get; set; } = 5f;
 
 
-  
+    public bool hit { get; set; } = false;
+
+
+    public GameObject startGlowHolderPrefab;
+
 
     public void Initialize(float length)
     {
@@ -52,22 +56,48 @@ public class HoldSlider : MonoBehaviour, SliderInterface
         endSliderCompletion.endSlider = endSlider.gameObject;
     }
 
-    void Update()
+    void Start()
     {
-        start.transform.position += (direction * horizontal_speed * Time.deltaTime);
+        StartCoroutine(UpdateWithSongTime());
+        startSliderSpriteRenderer.color += new Color(0.05f, 0.05f, 0.05f);
+        bodySprite.color += new Color(0.05f, 0.05f, 0.05f, 0f);
+        endSliderSpriteRenderer.color += new Color(0.05f, 0.05f, 0.05f);
     }
+
+
+    IEnumerator UpdateWithSongTime()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            this.transform.position += (direction * horizontal_speed * (float)GameState.songTimeDelta);
+            
+        }
+
+    }
+
+
+    void HitDetected()
+    {
+        hit = true;
+       // StartCoroutine(GlowFadeOut());
+    }
+
+
 
     public void DetectHit() {
 
+
         if (Input.GetKeyDown(clickKey) && !GameState.paused)
         {
-
+            HitDetected();
             if (hitScore == HitScore.Perfect)
             {
                 GlobalHelper.global.scoreManager.totalHits += 1;
                 GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
                 GlobalHelper.global.scoreManager.combo += 1;
-                GlobalHelper.global.hitScoreText.text = "PERFECT";
+                GlobalHelper.global.SpawnPerfectText();
+                //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("PERFECT", GlobalHelper.global.hitScoreText.transform);
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
 
             }
@@ -76,7 +106,8 @@ public class HoldSlider : MonoBehaviour, SliderInterface
                 GlobalHelper.global.scoreManager.totalHits += 1;
                 GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore;
                 GlobalHelper.global.scoreManager.combo += 1;
-                GlobalHelper.global.hitScoreText.text = "GOOD";
+                GlobalHelper.global.SpawnGoodText();
+                //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("GOOD", GlobalHelper.global.hitScoreText.transform);
                 GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
             }
 
@@ -86,8 +117,13 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
     }
     bool firstHold = false;
+    StartGlowHolder startGlowHolderInstance;
     IEnumerator HoldDown()
     {
+
+        startGlowHolderInstance = Instantiate(startGlowHolderPrefab).GetComponent<StartGlowHolder>();
+        startGlowHolderInstance.Init(start.position, startSliderSpriteRenderer.color);
+
 
         if (firstHold) yield break;
         firstHold = true;
@@ -139,19 +175,22 @@ public class HoldSlider : MonoBehaviour, SliderInterface
                 {
                     GlobalHelper.global.scoreManager.totalHits += 1;
                     GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-                    GlobalHelper.global.hitScoreText.text = "PERFECT";
+                
                     GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
                     GlobalHelper.global.scoreManager.combo += 1;
+                    GlobalHelper.global.SpawnPerfectText();
+                    startGlowHolderInstance.FadeOut();
                     Destroy(this.gameObject);
                 }
                 else
                 {
-                   
-                    GlobalHelper.global.hitScoreText.text = "MISS";
+                  
                     GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
                     GlobalHelper.global.scoreManager.combo = 0;
+                    GlobalHelper.global.SpawnMissText();
+                    startGlowHolderInstance.FadeOutBlack();
                 }
-
+              
                 Destroy(endSliderFailBoxScript.gameObject);
                 Destroy(endSliderCompletion.gameObject);
 
@@ -169,7 +208,10 @@ public class HoldSlider : MonoBehaviour, SliderInterface
 
         if(endSliderFailBoxScript != null) Destroy(endSliderFailBoxScript.gameObject);
         if(endSliderCompletion.gameObject != null) Destroy(endSliderCompletion.gameObject);
-        GlobalHelper.global.FailHit();
+        GlobalHelper.global.MissHit();
+        GlobalHelper.global.SpawnMissText();
+        if (startGlowHolderInstance != null) startGlowHolderInstance.FadeOutBlack();
+
         Destroy(this.gameObject);
 
     }

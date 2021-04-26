@@ -20,17 +20,17 @@ public class InactiveSliderRegion : MonoBehaviour
             SliderInterface sliderInterface = collision.gameObject.GetComponent<SliderInterface>();
 
 
-            if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.RightSlider && sliderRegion == SliderRegion.Right)
+            if (sliderInterface != null && sliderInterface.hit != true && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.RightSlider && sliderRegion == SliderRegion.Right)
             {
 
-
+                   
                 GlobalHelper.global.FailHit();
 
                 sliderInterface.Darken();
 
                // Destroy(collision.gameObject);
             }
-            else if (sliderInterface != null && sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.LeftSlider && sliderRegion == SliderRegion.Left)
+            else if (sliderInterface != null && sliderInterface.hit != true  &&  sliderInterface.can_destroy && sliderInterface.sliderType == SliderType.LeftSlider && sliderRegion == SliderRegion.Left)
             {
 
                 GlobalHelper.global.FailHit();

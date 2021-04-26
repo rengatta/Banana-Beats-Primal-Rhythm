@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 216ef707ec54eba479b3be8ce19bfd4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,9 +73,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 999290683
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
-  m_Color: {r: 0.8584906, g: 0, b: 0.7663297, a: 1}
+  m_Color: {r: 1, g: 0.042452812, b: 0.8959189, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   direction: {x: 1, y: 0, z: 0}
   spriteRenderer: {fileID: 785867024226391153}
   clickKey: 97
+  hitScoreTextPrefab: {fileID: 4709901619108487353, guid: 275ee3d2f847a0d49a67af1b5824b09f, type: 3}
 --- !u!50 &-9011437756714209394
 Rigidbody2D:
   serializedVersion: 4

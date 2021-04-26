@@ -22,10 +22,5 @@ public class EndSliderCompletion : MonoBehaviour
         return false;
     }
 
- 
-
-
-
-
 }
  

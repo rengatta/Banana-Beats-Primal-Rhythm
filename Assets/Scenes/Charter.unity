@@ -3076,6 +3076,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 894682208778938356, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1210950229103802476, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3136,6 +3140,14 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 395386910}
+    - target: {fileID: 4995600163511559811, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: fadeIn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4995600163511559811, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6071786326443734879, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

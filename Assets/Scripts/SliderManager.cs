@@ -101,7 +101,14 @@ public class SliderManager : MonoBehaviour
     public AudioSource audioSource;
 
 
+    public TextMeshProUGUI testText1;
+    public TextMeshProUGUI testText2;
+
+
     float currentSongTime = 0.0f;
+
+
+
     class SpawnData{
         public float spawnTime = 0.0f;
         public float holdSliderEndPosition = 0.0f;
@@ -124,17 +131,33 @@ public class SliderManager : MonoBehaviour
         activeSliders.Clear();
     }
 
-    public void PlayLevelDebug(float debugStartTime = 0.0f) {
-        float songStartTime = debugStartTime * audioSource.clip.length;
-        PlayLevelAtTime(songStartTime);
-    }
 
-    IEnumerator TimedSpawner(float speed, List<SpawnData> spawnData, float spawnBuffer) {
+    IEnumerator TimedSpawner(float speed, List<SpawnData> spawnData, float spawnBuffer, float preTime, float songTime) {
 
         float spawnPosition;
+        currentSongTime = songTime;
+
+        GlobalHelper.global.audioSource.time = songTime;
+        bool alreadyPlayed = false;
+
+
+        double previousTime = AudioSettings.dspTime;
+        double audioDelta;
+      
         while (spawnData.Count > 0) {
 
-            while(currentSongTime >= spawnData[spawnData.Count-1].spawnTime - spawnBuffer ) {
+            audioDelta = AudioSettings.dspTime - previousTime;
+            currentSongTime += (float)audioDelta;
+            GameState.songTimeDelta = audioDelta;
+            if (currentSongTime >= preTime && alreadyPlayed != true)
+            {
+                GlobalHelper.global.audioSource.Play();
+                alreadyPlayed = true;
+            }
+
+
+
+            while (currentSongTime >= spawnData[spawnData.Count-1].spawnTime - spawnBuffer) {
             
                 switch (spawnData[spawnData.Count - 1].sliderType)
                 {
@@ -163,11 +186,26 @@ public class SliderManager : MonoBehaviour
 
             }
 
-            
-            currentSongTime += Time.deltaTime;
+
+            previousTime = AudioSettings.dspTime;
             yield return null;
 
         }
+
+        while(true) {
+            audioDelta = AudioSettings.dspTime - previousTime;
+            currentSongTime += (float)audioDelta;
+            GameState.songTimeDelta = audioDelta;
+            if (currentSongTime >= preTime && alreadyPlayed != true)
+            {
+                GlobalHelper.global.audioSource.Play();
+                alreadyPlayed = true;
+            }
+            previousTime = AudioSettings.dspTime;
+            yield return null;
+        }
+
+   
 
 
     }
@@ -225,11 +263,12 @@ public class SliderManager : MonoBehaviour
         SceneToSceneData.maxPossibleScore = this.totalScore;
         SceneToSceneData.maxPossibleCombo = this.totalCombo;
         StopAllCoroutines();
-        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer));
+        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer, preTime, 0f));
     }
 
     public void PlayLevelAtTime(float time)
     {
+
         LevelData currentLevel = GlobalHelper.global.currentLevel;
         double speed = currentLevel.sliderSpeed;
         double spawnTime;
@@ -292,7 +331,8 @@ public class SliderManager : MonoBehaviour
 
 
         StopAllCoroutines();
-        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer));
+        StartCoroutine(TimedSpawner((float)speed, spawnData, spawnBuffer, 0f, time));
+
     }
 
 

@@ -115,6 +115,7 @@ public class RecordManager : MonoBehaviour
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
             //GlobalHelper.global.audioSource.Stop();
             GlobalHelper.global.audioSource.time = songDurationSlider.value;
+           
             GlobalHelper.global.audioSource.Play();
 
         }

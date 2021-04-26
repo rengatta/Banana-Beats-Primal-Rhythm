@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Utilities;
 public class LevelLoader : MonoBehaviour
 {
@@ -18,17 +19,16 @@ public class LevelLoader : MonoBehaviour
     public float endLevelPause = 2f;
     public float preTime = 3.0f;
 
+    public FadeInOut fadeInOut;
+
 
     public void InitializeLevel(string levelName) {
         songStarted = false;
         StopAllCoroutines();
-        LoadLevel(levelName);
 
-        audioSource.time = debugStartTime * audioSource.clip.length;
-        audioSource.Play();
-        songStarted = true;
-        sliderManager.PlayLevelDebug(debugStartTime);
-       
+
+        LoadLevel(levelName);
+        StartCoroutine(PreTimeWait2());
     }
 
     public void InitializeLevel2(string levelName)
@@ -38,19 +38,25 @@ public class LevelLoader : MonoBehaviour
         LoadLevel(levelName);
 
         sliderManager.PlayLevelRegular(preTime);
-
-        StartCoroutine(PreTimeWait());
+        songStarted = true;
     }
 
 
 
-    IEnumerator PreTimeWait() {
-        yield return new WaitForSeconds(preTime);
 
+    IEnumerator PreTimeWait2()
+    {
+        //yield return new WaitForSeconds(3f);
+        yield return null;
 
-        audioSource.time = debugStartTime * audioSource.clip.length;
-        audioSource.Play();
+        sliderManager.PlayLevelAtTime(debugStartTime * GlobalHelper.global.audioSource.clip.length);
         songStarted = true;
+    }
+
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 0;  
+        Application.targetFrameRate = 144;
     }
 
     // Start is called before the first frame update
@@ -58,13 +64,13 @@ public class LevelLoader : MonoBehaviour
     {
         if (debugging)
         {
-            InitializeLevel(debugLevelName);
+            InitializeLevel2(debugLevelName);
         }
         else {
 
             if (SceneToSceneData.nextLevelName == "nolevel")
             {
-                InitializeLevel(debugLevelName);
+                InitializeLevel2(debugLevelName);
                 //InitializeLevel2(debugLevelName);
 
             }
@@ -75,7 +81,10 @@ public class LevelLoader : MonoBehaviour
             }
 
         }
+
+
     }
+
 
     public void DetectLevelEnd()
     {
@@ -89,13 +98,23 @@ public class LevelLoader : MonoBehaviour
     }
 
     IEnumerator GotoLevelCompleteScene() {
-        SceneToSceneData.currentScore = GlobalHelper.global.scoreManager.score;
-        SceneToSceneData.currentHighestCombo = GlobalHelper.global.scoreManager.highestCombo;
-        SceneToSceneData.totalHits = GlobalHelper.global.scoreManager.totalHits;
-        yield return new WaitForSeconds(endLevelPause);
-        SceneManager.LoadScene(levelCompleteScene);
+        if (GameState.failed != true)
+        {
+            SceneToSceneData.currentScore = GlobalHelper.global.scoreManager.score;
+            SceneToSceneData.currentHighestCombo = GlobalHelper.global.scoreManager.highestCombo;
+            SceneToSceneData.totalHits = GlobalHelper.global.scoreManager.totalHits;
+            yield return new WaitForSeconds(endLevelPause);
+
+
+
+            fadeInOut.FadeOut(FadeOutLoad()); 
+        }
     }
 
+    IEnumerator FadeOutLoad() {
+        SceneManager.LoadScene(levelCompleteScene);
+        yield return null;
+    }
 
     private void Update()
     {
@@ -103,19 +122,14 @@ public class LevelLoader : MonoBehaviour
     }
 
 
-
     public void LoadLevel(string levelName)
     {
-
-
         TextAsset mydata = Resources.Load<TextAsset>("LevelSaves\\" + levelName);
         string readText = mydata.text;
         GlobalHelper.global.currentLevel = JsonUtility.FromJson<LevelData>(readText);
         GlobalHelper.global.currentAudioClip = Resources.Load<AudioClip>("Audio\\" + GlobalHelper.global.currentLevel.audioClipName);
         GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
         
-
-
     }
 
 }

@@ -16,10 +16,17 @@ public class PauseMenu : MonoBehaviour
     public AudioSource audioSource;
 
     public Slider audioSlider;
-
     public SceneField levelSelectScene;
+    public SceneField mainMenuScene;
+    public SceneField retryScene;
+
 
     public Toggle muteToggle;
+
+    public FadeInOut fadeInOut;
+
+
+
 
     public void TogglePause() {
         if (GameState.paused)
@@ -29,7 +36,8 @@ public class PauseMenu : MonoBehaviour
             pauseRoot.SetActive(false);
             optionsRoot.SetActive(false);
             Time.timeScale = 1.0f;
-            audioSource.UnPause();
+            GlobalHelper.global.audioSource.UnPause();
+            AudioListener.pause = false;
 
         }
         else
@@ -38,11 +46,17 @@ public class PauseMenu : MonoBehaviour
             globalRoot.SetActive(true);
             pauseRoot.SetActive(true);
             Time.timeScale = 0.0f;
-            audioSource.Pause();
+            GlobalHelper.global.audioSource.Pause();
+            AudioListener.pause = true;
         }
 
     }
 
+    public void UnPause() {
+        GameState.paused = false;
+        Time.timeScale = 1.0f;
+        AudioListener.pause = false;
+    }
 
     public void OptionsMenuButton() {
         pauseRoot.SetActive(false);
@@ -68,11 +82,43 @@ public class PauseMenu : MonoBehaviour
 
     }
 
+    IEnumerator SceneFadeOut()
+    {
+        UnPause();
+        SceneManager.LoadScene(levelSelectScene);
+        yield return null;
+    }
+
+    IEnumerator MainMenuFadeOut()
+    {
+        UnPause();
+        SceneManager.LoadScene(mainMenuScene);
+        yield return null;
+    }
+
+    IEnumerator RetryFadeOut()
+    {
+        UnPause();
+        SceneManager.LoadScene(retryScene);
+        yield return null;
+    }
+
+
+
+    public void MainMenuButton() {
+        fadeInOut.FadeOut(MainMenuFadeOut());
+    }
+
+    public void RetryButton() {
+
+        fadeInOut.FadeOut(RetryFadeOut());
+    }
+
 
     public void BackToLevelSelectButton() {
-        GameState.paused = false;
-        Time.timeScale = 1.0f;
-        SceneManager.LoadScene(levelSelectScene);
+
+     
+        fadeInOut.FadeOut(SceneFadeOut());
     }
 
     void Update()

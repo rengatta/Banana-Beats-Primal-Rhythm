@@ -31,6 +31,10 @@ public class LevelComplete : MonoBehaviour
     public TextMeshProUGUI accuracyText;
     public SceneField levelSelectScene;
     string grade = "F";
+
+    public FadeInOut fadeInOut;
+
+
     void Start()
     {
         scoreText.text = "Score: " + (int)SceneToSceneData.currentScore + " / " + (int)SceneToSceneData.maxPossibleScore;
@@ -46,9 +50,6 @@ public class LevelComplete : MonoBehaviour
     {
         PerformanceSaveData previousSave;
         string path = Application.streamingAssetsPath + "\\PlayerPerformanceData\\" + SceneToSceneData.nextLevelName + ".txt";
-
-
-
 
         if (path.Length == 0)
         {
@@ -134,9 +135,14 @@ public class LevelComplete : MonoBehaviour
 
     }
 
-    public void GotoLevelSelect() {
+    IEnumerator FadeOut() {
         SceneManager.LoadScene(levelSelectScene);
+        yield return null;
+    }
 
+
+    public void GotoLevelSelect() {
+        fadeInOut.FadeOut(FadeOut());
     }
     
 }

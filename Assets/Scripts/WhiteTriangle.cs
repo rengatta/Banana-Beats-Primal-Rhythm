@@ -6,8 +6,36 @@ using UnityEngine;
 public class WhiteTriangle : MonoBehaviour
 {
 
+    public SpriteRenderer spriteRenderer;
     public BoxCollider2D triangleRegion;
     public HealthUI healthUI;
+
+    float stayColorTime = 0.1f;
+    float revertColorSpeed = 5f;
+
+    public void ChangeColor(Color color) {
+        StopAllCoroutines();
+        spriteRenderer.color = color;
+        StartCoroutine(RevertColor());
+    }
+
+    IEnumerator RevertColor() {
+        yield return new WaitForSeconds(stayColorTime);
+        float r, g, b = g = r = 0.0f;
+
+
+        while(spriteRenderer.color != Color.white) {
+            r = Mathf.Clamp(spriteRenderer.color.r + revertColorSpeed * Time.deltaTime, 0.0f, 1.0f);
+            g = Mathf.Clamp(spriteRenderer.color.g + revertColorSpeed * Time.deltaTime, 0.0f, 1.0f);
+            b = Mathf.Clamp(spriteRenderer.color.b + revertColorSpeed * Time.deltaTime, 0.0f, 1.0f);
+
+            spriteRenderer.color = new Color(r, g, b);
+            yield return null;
+        }
+   
+
+    }
+
 
     public void DetectHit() {
         //detects if the endslider is within the starting area of where the player "clicks" the hold slider
@@ -25,7 +53,7 @@ public class WhiteTriangle : MonoBehaviour
         {
             sliderScript = m_Hit[i].collider.gameObject.GetComponent<SliderInterface>();
             
-            if(sliderScript != null) {
+            if(sliderScript != null && sliderScript.hit != true) {
                 if (sliderScript.sliderType == SliderType.LeftSlider)
                 {
                     if(!foundleft) {
@@ -100,8 +128,11 @@ public class WhiteTriangle : MonoBehaviour
 
 
     void Miss() {
-        GlobalHelper.global.hitScoreText.text = "MISS";
+
+        GlobalHelper.global.SpawnMissText();
+        //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("MISS", GlobalHelper.global.hitScoreText.transform);
         GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
+        GlobalHelper.global.MissHit();
     }
 
     private void Update()
