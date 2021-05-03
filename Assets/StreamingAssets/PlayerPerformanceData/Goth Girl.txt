@@ -1,0 +1,1 @@
+{"levelName":"Goth Girl","bestScore":8049.9326171875,"bestCombo":91,"bestGrade":"B","maxPossibleScore":1.0,"maxPossibleCombo":1,"bestAccuracy":88.77118682861328}

@@ -27,16 +27,12 @@ public class HoldSlider : MonoBehaviour, SliderInterface
     public Vector3 direction = Vector3.left;
     public KeyCode clickKey;
 
-
     [HideInInspector]
     public float score { get; set; } = 5f;
 
-
     public bool hit { get; set; } = false;
 
-
     public GameObject startGlowHolderPrefab;
-
 
     public void Initialize(float length)
     {
@@ -64,58 +60,63 @@ public class HoldSlider : MonoBehaviour, SliderInterface
         endSliderSpriteRenderer.color += new Color(0.05f, 0.05f, 0.05f);
     }
 
-
     IEnumerator UpdateWithSongTime()
     {
-        while (true)
-        {
-            yield return new WaitForEndOfFrame();
-            this.transform.position += (direction * horizontal_speed * (float)GameState.songTimeDelta);
-            
-        }
+        double previousDsp = AudioSettings.dspTime;
+        double audioDelta;
+        while (true)  {
+
+            audioDelta = AudioSettings.dspTime - previousDsp;
+            this.transform.position += direction * horizontal_speed  * (float)(audioDelta);
+            previousDsp = AudioSettings.dspTime;
+            yield return null;
+        }   
 
     }
 
-
-    void HitDetected()
-    {
+    void HitDetected() {
         hit = true;
-       // StartCoroutine(GlowFadeOut());
     }
 
+    public void DetectHit(ClickDirection clickDirection) {
 
-
-    public void DetectHit() {
-
-
-        if (Input.GetKeyDown(clickKey) && !GameState.paused)
+        if (!GameState.paused && !hit)
         {
-            HitDetected();
-            if (hitScore == HitScore.Perfect)
-            {
-                GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
-                GlobalHelper.global.scoreManager.combo += 1;
-                GlobalHelper.global.SpawnPerfectText();
-                //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("PERFECT", GlobalHelper.global.hitScoreText.transform);
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-
-            }
-            else if (hitScore == HitScore.Good)
-            {
-                GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore;
-                GlobalHelper.global.scoreManager.combo += 1;
-                GlobalHelper.global.SpawnGoodText();
-                //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("GOOD", GlobalHelper.global.hitScoreText.transform);
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-            }
-
-            StartCoroutine(HoldDown());
+           if(sliderType == SliderType.RightSlider && clickDirection == ClickDirection.right)
+                SliderReceived();
+           else if (sliderType == SliderType.LeftSlider && clickDirection == ClickDirection.left)
+                SliderReceived();
 
         }
 
     }
+
+    void SliderReceived() {
+        if (hitScore == HitScore.Perfect)
+        {
+            GlobalHelper.global.scoreManager.totalHits += 1;
+            GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore * SceneToSceneData.perfectMultiplier;
+            GlobalHelper.global.scoreManager.combo += 1;
+            GlobalHelper.global.SpawnPerfectText();
+            //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("PERFECT", GlobalHelper.global.hitScoreText.transform);
+            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
+
+        }
+        else if (hitScore == HitScore.Good)
+        {
+            GlobalHelper.global.scoreManager.totalHits += 1;
+            GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderScore;
+            GlobalHelper.global.scoreManager.combo += 1;
+            GlobalHelper.global.SpawnGoodText();
+            //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("GOOD", GlobalHelper.global.hitScoreText.transform);
+            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
+        }
+        HitDetected();
+        StartCoroutine(HoldDown());
+
+    }
+
+
     bool firstHold = false;
     StartGlowHolder startGlowHolderInstance;
     IEnumerator HoldDown()
@@ -149,7 +150,7 @@ public class HoldSlider : MonoBehaviour, SliderInterface
             GlobalHelper.global.scoreManager.score += SceneToSceneData.holdSliderHoldScore * Time.deltaTime;
 
             //detects if the player lets go of a hold in order to "catch" the end slider
-            if (Input.GetKeyUp(clickKey))
+            if (ClickDetector.GetClickUp(clickKey))
             {
                 //detach from the sprite mask root since we need the sprite mask to move with the slider now
                 this.transform.parent = null;

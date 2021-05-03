@@ -25,7 +25,16 @@ public class PauseMenu : MonoBehaviour
 
     public FadeInOut fadeInOut;
 
+    public GameObject cogButton;
 
+    private void Start()
+    {
+        if (Application.platform == RuntimePlatform.Android || GameState.androidMode == true) {
+            cogButton.SetActive(true);
+        } else {
+            cogButton.SetActive(false);
+        }
+    }
 
 
     public void TogglePause() {

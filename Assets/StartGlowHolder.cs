@@ -27,24 +27,19 @@ public class StartGlowHolder : MonoBehaviour
 
     }
 
-    float blackoutSpeed = 1f;
+    float blackoutSpeed = 6.0f;
     IEnumerator GlowFadeOutBlack()
     {
 
-        while (spriteRenderer.color.a > 0f)
-        {
-            intensity -= blackoutSpeed * Time.deltaTime;
- 
-
-            spriteRenderer.color -= new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime);
-
+        while (spriteRenderer.color.a > 0f) {
+            spriteRenderer.color -= new Color(blackoutSpeed * Time.deltaTime, blackoutSpeed * Time.deltaTime, blackoutSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime);
 
             yield return null;
         }
         Destroy(this.gameObject);
     }
 
-    float fadeSpeed = 20f;
+    float fadeSpeed = 10f;
     IEnumerator GlowFadeOut()
     {
         intensity += 1.3f;

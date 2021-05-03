@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 //makes sure only one slider is triggered for every input press, analyzes each slider in the whitetriangle hitbox area
 public class WhiteTriangle : MonoBehaviour
 {
@@ -37,7 +39,7 @@ public class WhiteTriangle : MonoBehaviour
     }
 
 
-    public void DetectHit() {
+    public void DetectHit(bool mouseDown) {
         //detects if the endslider is within the starting area of where the player "clicks" the hold slider
         int layerMask = ((1 << GlobalHelper.sliderLayer));
         RaycastHit2D[] m_Hit = Physics2D.BoxCastAll(triangleRegion.bounds.center, triangleRegion.bounds.size, 0f, Vector2.up, 0f, layerMask);
@@ -49,6 +51,7 @@ public class WhiteTriangle : MonoBehaviour
         float rightxposition = 0f;
         SliderInterface rightScript = null;
 
+        //makes sure that multiple sliders aren't activated in a single keypress. leftmost or rightmost sliders take activation precedence depending on the direction
         for (int i = 0; i < m_Hit.Length; i++)
         {
             sliderScript = m_Hit[i].collider.gameObject.GetComponent<SliderInterface>();
@@ -90,26 +93,30 @@ public class WhiteTriangle : MonoBehaviour
          
         }
 
+        ClickDirection clickDirection = ClickDetector.GetClickDirection(mouseDown);
 
 
         if (foundleft || foundright)
         {
-
+            //activate sliders
             if (foundleft)
-                leftScript.DetectHit();
+                leftScript.DetectHit(clickDirection);
             if (foundright)
-                rightScript.DetectHit();
+                rightScript.DetectHit(clickDirection);
+            //next, check for "miss" presses. don't have to check if both types of sliders are in the triangle
             if (foundleft && foundright) return;
 
-            if (foundleft) {
+      
 
-                if (Input.GetKeyDown(KeyCode.L)) {
+            if (foundleft) {
+                //left side but right button pressed
+                if (clickDirection == ClickDirection.right) {
                     Miss();
                 }
             }
             else if (foundright) {
-
-                if (Input.GetKeyDown(KeyCode.A)) {
+                //right side but left button pressed
+                if (clickDirection == ClickDirection.left) {
                     Miss();
                 }
 
@@ -117,7 +124,8 @@ public class WhiteTriangle : MonoBehaviour
 
         }
         else {
-            if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown(KeyCode.A)) {
+            //nothing is in the triangle so there is always a miss regardless of which key is pressed
+            if (clickDirection == ClickDirection.left || clickDirection == ClickDirection.right) {
                 Miss();
             }
         }
@@ -127,18 +135,18 @@ public class WhiteTriangle : MonoBehaviour
     }
 
 
+
     void Miss() {
 
         GlobalHelper.global.SpawnMissText();
-        //Instantiate(GlobalHelper.global.hitScoreTextPrefab).GetComponent<HitScoreText>().Init("MISS", GlobalHelper.global.hitScoreText.transform);
         GlobalHelper.global.smileys.ActivateSmiley(Smiley.Meh);
         GlobalHelper.global.MissHit();
     }
 
-    private void Update()
-    {
-        if(Input.anyKeyDown) {
-            DetectHit();
+    private void Update() {
+
+        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.L)) {
+            DetectHit(false);
         }
     }
 }

@@ -7,8 +7,7 @@ using TMPro;
 //probably a bad idea to put any more variables in global
 public static class GlobalHelper
 {
-    static GlobalHelper()
-    {
+    static GlobalHelper() {
         GameObject globalInstance = GameObject.Find("Global");
         _global = globalInstance.GetComponent<Global>();
     }
@@ -25,8 +24,7 @@ public static class GlobalHelper
     public static TextMeshProUGUI test;
     private static Global _global;
 
-    public static Global global
-    {
+    public static Global global {
         get
         {
             if (_global == null)
@@ -41,11 +39,75 @@ public static class GlobalHelper
 }
 
 
-public static class GameState
-{
+public static class GameState {
     public static bool paused = false;
-    public static double songTimeDelta = 0f;
     public static bool failed = false;
+    public static bool androidMode = false;
+
+}
+
+public enum ClickDirection {
+    right,
+    left,
+    none
+}
+
+public static class ClickDetector {
+
+    public static ClickDirection GetClickDirection(bool mouseDown)
+    {
+        if (Application.platform == RuntimePlatform.Android || GameState.androidMode == true)
+        {
+
+            if (mouseDown != true) return ClickDirection.none;
+
+            if (Input.mousePosition.x >= Screen.width / 2.0f)
+            {
+                //right side of screen
+                SceneToSceneData.totalTries += 1;
+                return ClickDirection.right;
+            }
+            else
+            {
+                SceneToSceneData.totalTries += 1;
+                return ClickDirection.left;
+            }
+
+        }
+        else
+        {
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SceneToSceneData.totalTries += 1;
+                return ClickDirection.left;
+            }
+            else if (Input.GetKeyDown(KeyCode.L))
+            {
+                SceneToSceneData.totalTries += 1;
+                return ClickDirection.right;
+            }
+        }
+
+        return ClickDirection.none;
+    }
+
+    public static bool GetClickUp(KeyCode key) {
+
+        bool isUp;
+        if ((Application.platform == RuntimePlatform.Android || GameState.androidMode == true))
+        {
+            isUp = Input.GetMouseButtonUp(0);
+        } 
+        else {
+            isUp = Input.GetKeyUp(key);
+        }
+        if (isUp) {
+            SceneToSceneData.totalTries += 1;
+        }
+        return isUp;
+    }
+
 }
 
 public static class SceneToSceneData
@@ -64,6 +126,7 @@ public static class SceneToSceneData
     public static int currentHighestCombo = 0;
     public static string nextLevelName = "nolevel";
     public static int totalHits = 0;
+    public static int totalTries = 0;
     public static bool gameOptionsInit = false;
 }
 
@@ -80,10 +143,6 @@ public class Global : MonoBehaviour
     public AudioSource effectsAudioSource;
 
     public GameObject hitScoreTextPrefab;
-
-
-
-
 
     public WhiteTriangle whiteTriangle;
     public bool inCharter = false;
@@ -129,7 +188,7 @@ public class Global : MonoBehaviour
     }
 
     public void SpawnPerfectText() {
-        if (scoreManager.combo != 0 && scoreManager.combo % 10 == 0)
+        if (scoreManager.combo != 0 && scoreManager.combo % 7 == 0)
         {
             SpawnText("EXCELLENT", purple + new Color(0.1f, 0.1f, 0.1f));
             whiteTriangle.ChangeColor(purple + new Color(0.1f, 0.1f, 0.1f));

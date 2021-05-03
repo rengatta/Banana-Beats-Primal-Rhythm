@@ -1,0 +1,1 @@
+{"levelName":"nolevel","bestScore":8063.12939453125,"bestCombo":225,"bestGrade":"S","maxPossibleScore":1.0,"maxPossibleCombo":1,"bestAccuracy":99.3697509765625}

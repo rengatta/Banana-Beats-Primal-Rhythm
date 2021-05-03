@@ -20,13 +20,12 @@ public interface SliderInterface
 
     void Darken();
 
-    void DetectHit();
+    void DetectHit(ClickDirection clickDirection);
 
     float score { get; set; }
 
     bool hit { get; set; }
 }
-
 
 public class RegularSlider : MonoBehaviour, SliderInterface
 {
@@ -54,26 +53,25 @@ public class RegularSlider : MonoBehaviour, SliderInterface
         spriteRenderer.color = tempColor;
     }
 
-
-     float glowDuration = 0.05f;
-     float fadeSpeed = 10f;
-   
+    float glowDuration = 0.05f;
+    float fadeSpeed = 15f;
+    float intensity = 4.5f;
     IEnumerator GlowFadeOut() {
 
-        spriteRenderer.material.SetFloat("_Intensity", 4.5f);
+        spriteRenderer.material.SetFloat("_Intensity", intensity);
 
-      
-         //gameObject.GetComponent<Renderer>().sharedMaterial.SetFloat("_YourParameter", someValue);
+        //gameObject.GetComponent<Renderer>().sharedMaterial.SetFloat("_YourParameter", someValue);
         yield return new WaitForSeconds(glowDuration);
 
         while(spriteRenderer.color.a > 0f) {
             spriteRenderer.color -= new Color(0f, 0f, 0f, fadeSpeed * Time.deltaTime);
+            intensity -= fadeSpeed * Time.deltaTime;
+            if (intensity <= 0f) intensity = 0f;
+            spriteRenderer.material.SetFloat("_Intensity", intensity);
 
             yield return null;
         }
 
-        
-       
         Destroy(this.gameObject);
     }
 
@@ -83,36 +81,41 @@ public class RegularSlider : MonoBehaviour, SliderInterface
         StartCoroutine(GlowFadeOut());
     }
 
-    public void DetectHit() {
-        if (Input.GetKeyDown(clickKey) && !GameState.paused && !hit)
-        {
+    public void DetectHit(ClickDirection clickDirection) {
 
-            
-            if (hitScore == HitScore.Perfect)
-            {
-                GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore* SceneToSceneData.perfectMultiplier;
+        //code runs if not on android
+        if (!GameState.paused && !hit) {
 
-                GlobalHelper.global.scoreManager.combo += 1;
-
-                GlobalHelper.global.SpawnPerfectText();
-
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-            }
-            else if (hitScore == HitScore.Good)
-            {
-                GlobalHelper.global.scoreManager.totalHits += 1;
-                GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore;
-                GlobalHelper.global.scoreManager.combo += 1;
-
-                GlobalHelper.global.SpawnGoodText();
-  
-                GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
-            }
-
-            HitDetected();
+            if (sliderType == SliderType.RightSlider && clickDirection == ClickDirection.right)
+                SliderReceived();
+            else if (sliderType == SliderType.LeftSlider && clickDirection == ClickDirection.left)
+                SliderReceived();
         }
 
+    }
+
+    void SliderReceived() {
+        if (hitScore == HitScore.Perfect) {
+            GlobalHelper.global.scoreManager.totalHits += 1;
+            GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
+
+            GlobalHelper.global.scoreManager.combo += 1;
+
+            GlobalHelper.global.SpawnPerfectText();
+
+            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
+        }
+        else if (hitScore == HitScore.Good) {
+            GlobalHelper.global.scoreManager.totalHits += 1;
+            GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore;
+            GlobalHelper.global.scoreManager.combo += 1;
+
+            GlobalHelper.global.SpawnGoodText();
+
+            GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
+        }
+
+        HitDetected();
     }
 
     void Start() {
@@ -120,26 +123,26 @@ public class RegularSlider : MonoBehaviour, SliderInterface
         spriteRenderer.color += new Color(0.05f, 0.05f, 0.05f);
     }
 
-
     IEnumerator UpdateWithSongTime() {
 
-        while (true) {
-            yield return new WaitForEndOfFrame();
-            this.transform.position += (direction * horizontal_speed * (float)GameState.songTimeDelta);
+        double previousDsp = AudioSettings.dspTime;
+        double audioDelta;
+        while (true)
+        {
 
+            audioDelta = AudioSettings.dspTime - previousDsp;
+            this.transform.position += direction * horizontal_speed * (float)(audioDelta);
+            previousDsp = AudioSettings.dspTime;
+            yield return null;
         }
-
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer)
-        {
-            hitScore = HitScore.Perfect;
+        if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer) {
 
+            hitScore = HitScore.Perfect;
         }
-        else if (collision.gameObject.layer == GlobalHelper.goodRegionLayer)
-        {
+        else if (collision.gameObject.layer == GlobalHelper.goodRegionLayer) {
 
             hitScore = HitScore.Good;
 

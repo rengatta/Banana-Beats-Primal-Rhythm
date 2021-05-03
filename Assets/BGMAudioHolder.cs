@@ -8,11 +8,9 @@ public class BGMAudioHolder : MonoBehaviour
 
     AudioSource audioSource;
     public OptionsMenu optionsMenu;
-    public void SetOptions()
-    {
-        audioSource.volume = PlayerPrefs.GetFloat("Volume", 1.0f);
-
-
+    float startVolume;
+    public void SetOptions() {
+        audioSource.volume = PlayerPrefs.GetFloat("Volume", 1.0f) * startVolume;
 
         int muteToggled = PlayerPrefs.GetInt("MuteToggled", 0);
         if (muteToggled == 1)
@@ -25,10 +23,9 @@ public class BGMAudioHolder : MonoBehaviour
         }
     }
 
-    void Start()
-    {
+    void Start() {
         audioSource = GetComponent<AudioSource>();
-
+        startVolume = audioSource.volume;
 
         if (optionsMenu != null)
         {

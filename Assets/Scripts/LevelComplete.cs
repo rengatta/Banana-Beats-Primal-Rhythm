@@ -37,9 +37,10 @@ public class LevelComplete : MonoBehaviour
 
     void Start()
     {
+        
         scoreText.text = "Score: " + (int)SceneToSceneData.currentScore + " / " + (int)SceneToSceneData.maxPossibleScore;
         comboText.text = "Highest Combo: " + SceneToSceneData.currentHighestCombo + " / " + SceneToSceneData.maxPossibleCombo;
-        accuracyText.text = "Accuracy: " + System.Math.Round(((float)SceneToSceneData.totalHits / (float)SceneToSceneData.maxPossibleCombo) * 100.0f, 2)  + "%";
+        accuracyText.text = "Accuracy: " + System.Math.Round(((float)SceneToSceneData.totalHits / (float)SceneToSceneData.totalTries) * 100.0f, 2)  + "%";
 
 
         CalculateGrade();
@@ -73,7 +74,7 @@ public class LevelComplete : MonoBehaviour
             {
                 previousSave.bestCombo = SceneToSceneData.currentHighestCombo;
             }
-            float currentAccuracy = ((float)SceneToSceneData.totalHits / (float)SceneToSceneData.maxPossibleCombo) * 100.0f;
+            float currentAccuracy = ((float)SceneToSceneData.totalHits / (float)SceneToSceneData.totalTries) * 100.0f;
             if (currentAccuracy > previousSave.bestAccuracy) {
                 previousSave.bestAccuracy = currentAccuracy;
                 previousSave.bestGrade = grade;
@@ -96,7 +97,7 @@ public class LevelComplete : MonoBehaviour
         newSave.levelName = SceneToSceneData.nextLevelName;
         newSave.bestScore = SceneToSceneData.currentScore;
         newSave.bestCombo = SceneToSceneData.currentHighestCombo;
-        newSave.bestAccuracy = ((float)SceneToSceneData.totalHits / (float)SceneToSceneData.maxPossibleCombo) * 100.0f;
+        newSave.bestAccuracy = ((float)SceneToSceneData.totalHits / (float)SceneToSceneData.totalTries) * 100.0f;
         newSave.bestGrade = grade;
 
         string json = JsonUtility.ToJson(newSave);
@@ -106,7 +107,7 @@ public class LevelComplete : MonoBehaviour
 
     void CalculateGrade() {
 
-        float gradePercentage = ((float)SceneToSceneData.totalHits / (float)SceneToSceneData.maxPossibleCombo);
+        float gradePercentage = ((float)SceneToSceneData.currentScore / (float)SceneToSceneData.maxPossibleScore);
 
         if(gradePercentage >= 0.9f) {
             gradeText.text = "Grade: S";

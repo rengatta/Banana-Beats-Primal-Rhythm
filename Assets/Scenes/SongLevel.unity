@@ -510,7 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sliderManager: {fileID: 4939738161268445708}
   debugging: 0
-  debugLevelName: Hype
+  debugLevelName: Goth Girl
   debugStartTime: 0
   audioSource: {fileID: 1318784297}
   levelCompleteScene:
@@ -519,6 +519,11 @@ MonoBehaviour:
   endLevelPause: 2
   preTime: 3
   fadeInOut: {fileID: 6071786326599846348}
+--- !u!1 &1994020952 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 424218154276568740, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+  m_PrefabInstance: {fileID: 6071786326599846346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2012428874 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1210950229283894918, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
@@ -656,7 +661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 894682208778938355, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210950228174890986, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1210950228406311878, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: testText1
@@ -670,6 +679,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1318784297}
+    - target: {fileID: 1210950228908192413, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1210950229027495042, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_SortingOrder
       value: -4
@@ -722,6 +735,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayTest
       objectReference: {fileID: 0}
+    - target: {fileID: 1210950229117911284, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1210950229283894918, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: audioSource
       value: 
@@ -730,6 +747,14 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2986541222935965871, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3291678815449385184, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: cogButton
+      value: 
+      objectReference: {fileID: 1994020952}
     - target: {fileID: 3291678815449385184, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: audioSource
       value: 
@@ -749,6 +774,10 @@ PrefabInstance:
     - target: {fileID: 4644985239745251903, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: OptionsMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801593242147214339, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4995600163511559811, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: fadeInPause
@@ -846,6 +875,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6071786327387219969, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6071786327810428059, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -925,6 +958,10 @@ PrefabInstance:
     - target: {fileID: 6071786328350400575, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724138214637922061, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
