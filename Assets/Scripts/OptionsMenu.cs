@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class OptionsMenu : MonoBehaviour
     List<Resolution> resolutions;
 
     public GameObject androidDisableRoot;
+
+    public UniversalRenderPipelineAsset urpa;
+
+    public Toggle postProcessingToggle;
 
     void OnEnable() {
         InitializeOptions();
@@ -56,6 +61,11 @@ public class OptionsMenu : MonoBehaviour
 
 
 
+        if (PlayerPrefs.GetInt("PostProcessing", 1) == 1) {
+            postProcessingToggle.isOn = true;
+        } else {
+            postProcessingToggle.isOn = false;
+        }
 
 
         volumeSlider.value = PlayerPrefs.GetFloat("Volume", 1.0f);
@@ -115,8 +125,21 @@ public class OptionsMenu : MonoBehaviour
         int muteToggled = muteToggle.isOn ? 1 : 0;
         PlayerPrefs.SetInt("MuteToggled", muteToggled);
         muteToggleChangeEvent.Invoke();
-
     }
 
+
+    public void PostProcessingToggled() {
+
+        if (!postProcessingToggle.isOn)
+        {
+            Camera.main.GetUniversalAdditionalCameraData().renderPostProcessing = false;
+            urpa.supportsHDR = false;
+            PlayerPrefs.SetInt("PostProcessing", 0);
+        } else {
+            Camera.main.GetUniversalAdditionalCameraData().renderPostProcessing = true;
+            urpa.supportsHDR = true;
+            PlayerPrefs.SetInt("PostProcessing", 1);
+        }
+    } 
 
 }

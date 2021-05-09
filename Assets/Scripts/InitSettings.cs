@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class InitSettings : MonoBehaviour
 {
+    public UniversalRenderPipelineAsset urpa;
 
     void Initialize()
     {
@@ -20,6 +22,19 @@ public class InitSettings : MonoBehaviour
             Screen.fullScreen = false;
 
         }
+
+        if (PlayerPrefs.GetInt("PostProcessing", 1) == 1)
+        {
+            Camera.main.GetUniversalAdditionalCameraData().renderPostProcessing = true;
+            urpa.supportsHDR = true;
+        }
+        else
+        {
+            Camera.main.GetUniversalAdditionalCameraData().renderPostProcessing = false;
+            urpa.supportsHDR = false;
+        }
+
+
 
         int fullScreenSet = PlayerPrefs.GetInt("Fullscreen", 1);
 

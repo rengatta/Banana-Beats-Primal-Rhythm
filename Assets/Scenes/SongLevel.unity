@@ -686,6 +686,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayTest
       objectReference: {fileID: 0}
+    - target: {fileID: 5095942170572735415, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
+      propertyPath: urpa
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e030758c0ee0fe418ffc194858614da, type: 2}
     - target: {fileID: 6071786326443734879, guid: 02fc84ae57827b34fa612827c7ac67c9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
