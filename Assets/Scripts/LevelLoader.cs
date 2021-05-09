@@ -22,15 +22,6 @@ public class LevelLoader : MonoBehaviour
     public FadeInOut fadeInOut;
 
 
-    public void InitializeLevel(string levelName) {
-        songStarted = false;
-        StopAllCoroutines();
-
-
-        LoadLevel(levelName);
-        StartCoroutine(PreTimeWait2());
-    }
-
     public void InitializeLevel2(string levelName)
     {
         songStarted = false;
@@ -42,16 +33,6 @@ public class LevelLoader : MonoBehaviour
     }
 
 
-
-
-    IEnumerator PreTimeWait2()
-    {
-        //yield return new WaitForSeconds(3f);
-        yield return null;
-
-        sliderManager.PlayLevelAtTime(debugStartTime * GlobalHelper.global.audioSource.clip.length);
-        songStarted = true;
-    }
 
     private void Awake()
     {

@@ -15,8 +15,6 @@ public class InitSettings : MonoBehaviour
 
         }
         
-
-
         if (PlayerPrefs.GetInt("Windowed", 0) == 1)
         {
             Screen.fullScreen = false;
@@ -25,23 +23,19 @@ public class InitSettings : MonoBehaviour
 
         int fullScreenSet = PlayerPrefs.GetInt("Fullscreen", 1);
 
-        switch (PlayerPrefs.GetInt("Resolution", 0))
+        List<Resolution> resolutions = GameState.GetResolutions();
+
+        int index = PlayerPrefs.GetInt("Resolution", 0);
+
+        if (fullScreenSet == 0)
         {
-            case 0:
-                if (fullScreenSet == 0)
-                {
-                    Screen.SetResolution(1280, 720, false);
-                }
-                else
-                {
-                    Screen.SetResolution(1280, 720, true);
-                }
-                break;
-            case 1:
-                break;
-            default:
-                break;
+            Screen.SetResolution(resolutions[index].width, resolutions[index].height, false);
         }
+        else
+        {
+            Screen.SetResolution(resolutions[index].width, resolutions[index].height, true);
+        }
+
         SceneToSceneData.gameOptionsInit = true;
     }
 
@@ -51,9 +45,6 @@ public class InitSettings : MonoBehaviour
         Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    
 }

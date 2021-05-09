@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 //helps access the global singleton and stores slider layer identifiers
 //probably a bad idea to put any more variables in global
@@ -42,7 +43,37 @@ public static class GlobalHelper
 public static class GameState {
     public static bool paused = false;
     public static bool failed = false;
+
+  
     public static bool androidMode = false;
+
+    public static List<Resolution> resolutions = new List<Resolution>();
+
+    static bool Equality(float a, float b, float epsilon)
+    {
+        return Mathf.Abs(a - b) < epsilon;
+    }
+
+    public static List<Resolution> GetResolutions() {
+        if(resolutions.Count != 0) {
+            return resolutions;
+        } else {
+            resolutions = new List<Resolution>(Screen.resolutions);
+
+            int currentRefreshRate = Screen.currentResolution.refreshRate;
+        
+
+            resolutions.RemoveAll(item => item.refreshRate != currentRefreshRate);
+            
+            resolutions.RemoveAll(item => !Equality(((float)item.width / (float)item.height), (16.0f/9.0f), 0.001f));
+
+            //resolutions.RemoveAll(item => item.refreshRate != 60 || item.refreshRate != 59);
+     
+            resolutions.Reverse();
+            return resolutions;
+        }
+
+    }
 
 }
 
