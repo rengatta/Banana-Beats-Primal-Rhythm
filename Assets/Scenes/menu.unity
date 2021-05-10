@@ -3254,6 +3254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f0e38965bb7d8c4f9220971ee07a0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  urpa: {fileID: 11400000, guid: 5e030758c0ee0fe418ffc194858614da, type: 2}
 --- !u!4 &1257091348
 Transform:
   m_ObjectHideFlags: 0
@@ -6019,12 +6020,16 @@ PrefabInstance:
       objectReference: {fileID: 835932164}
     - target: {fileID: 5892602970442935742, guid: b2408ae654bb94648b5f9510251990d6, type: 3}
       propertyPath: audioSources.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5892602970442935742, guid: b2408ae654bb94648b5f9510251990d6, type: 3}
       propertyPath: audioSources.Array.data[0]
       value: 
       objectReference: {fileID: 74209984}
+    - target: {fileID: 5892602970442935742, guid: b2408ae654bb94648b5f9510251990d6, type: 3}
+      propertyPath: audioSources.Array.data[1]
+      value: 
+      objectReference: {fileID: 2115397744}
     - target: {fileID: 5892602970442935742, guid: b2408ae654bb94648b5f9510251990d6, type: 3}
       propertyPath: audioSources.Array.data[3]
       value: 

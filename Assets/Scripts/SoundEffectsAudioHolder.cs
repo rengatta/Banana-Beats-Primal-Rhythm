@@ -7,8 +7,6 @@ public class SoundEffectsAudioHolder : MonoBehaviour
 
     public List<AudioSource> audioSources;
 
-    public GameObject audioSourcePrefab;
-
     public OptionsMenu optionsMenu;
 
     public int numSources = 5;
