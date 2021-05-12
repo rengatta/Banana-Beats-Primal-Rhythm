@@ -8,7 +8,7 @@ public enum Smiley {
     Meh
 
 }
-
+//controls the monkey expressions that appear in the lower left corner
 
 public class Smileys : MonoBehaviour
 {

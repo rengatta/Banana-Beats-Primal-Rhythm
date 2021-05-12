@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//manages settings for audiosources that are for the background and not sound effects
+//stores and retrieves settings from PlayerPrefs and listens to an event in the Options menu whenever sound options are changed
 [RequireComponent(typeof(AudioSource))]
 public class BGMAudioHolder : MonoBehaviour
 {

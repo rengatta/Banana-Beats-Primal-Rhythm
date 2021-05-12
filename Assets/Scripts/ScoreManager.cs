@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Utilities;
-
+//used to store the scores and populate the relevant UIs when something is changed
 public class ScoreManager : MonoBehaviour
 {
     private float _score;

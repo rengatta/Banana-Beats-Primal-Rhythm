@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Utilities;
 using System.IO;
+
+
+//retrieves and calculates performance metrics to fill in the UI in the level complete scene
 class PerformanceSaveData {
     public string levelName = "";
     public float bestScore = 0;
@@ -19,9 +22,6 @@ class PerformanceSaveData {
     }
 
 }
-
-
-
 
 public class LevelComplete : MonoBehaviour
 {

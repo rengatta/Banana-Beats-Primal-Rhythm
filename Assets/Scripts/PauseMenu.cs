@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Utilities;
-
+//controls the pause menu logic
+//mostly just controls what the buttons do
 public class PauseMenu : MonoBehaviour
 {
     public GameObject globalRoot;

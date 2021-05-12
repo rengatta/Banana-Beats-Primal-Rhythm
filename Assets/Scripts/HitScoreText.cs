@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+//controls animation and fading of the hitscore text, which corresponds to the Misses, Perfects, Goods, etc that appear above the triangle
 public class HitScoreText : MonoBehaviour
 {
 

@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities;
 
-
+//used to load scenes
+//sort of redundant and not used properly, since scene loading can be done in one line
+//should be removed if necessary
 public class SceneLoader : MonoBehaviour
 {
     public SceneField level1;

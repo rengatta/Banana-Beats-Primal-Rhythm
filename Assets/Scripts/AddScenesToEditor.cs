@@ -4,7 +4,7 @@ using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
+//give editor functionality for dragging scenes into public SceneField variables
 namespace Utilities
 {
     [System.Serializable]

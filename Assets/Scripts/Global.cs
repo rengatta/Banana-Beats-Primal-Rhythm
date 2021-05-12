@@ -5,7 +5,7 @@ using TMPro;
 using System.Linq;
 
 //helps access the global singleton and stores slider layer identifiers
-//probably a bad idea to put any more variables in global
+//probably a bad idea to put any more variables in global that doesn't correspond to specific data shared by scenes
 public static class GlobalHelper
 {
     static GlobalHelper() {

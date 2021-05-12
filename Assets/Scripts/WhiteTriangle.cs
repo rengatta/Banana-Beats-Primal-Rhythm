@@ -5,6 +5,7 @@ using UnityEngine;
 
 
 //makes sure only one slider is triggered for every input press, analyzes each slider in the whitetriangle hitbox area
+//also sends information to the slider itself, that it is being recieved
 public class WhiteTriangle : MonoBehaviour
 {
 

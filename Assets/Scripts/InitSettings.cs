@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-
+//used to retrieve options menu settings previously stored in PlayerPrefs and apply them to the game inside of the main menu scene
 public class InitSettings : MonoBehaviour
 {
     public UniversalRenderPipelineAsset urpa;
@@ -38,19 +38,21 @@ public class InitSettings : MonoBehaviour
 
         int fullScreenSet = PlayerPrefs.GetInt("Fullscreen", 1);
 
-        List<Resolution> resolutions = GameState.GetResolutions();
-
-        int index = PlayerPrefs.GetInt("Resolution", 0);
-
-        if (fullScreenSet == 0)
+        if (!Application.isEditor)
         {
-            Screen.SetResolution(resolutions[index].width, resolutions[index].height, false);
-        }
-        else
-        {
-            Screen.SetResolution(resolutions[index].width, resolutions[index].height, true);
-        }
+            List<Resolution> resolutions = GameState.GetResolutions();
 
+            int index = PlayerPrefs.GetInt("Resolution", 0);
+
+            if (fullScreenSet == 0)
+            {
+                Screen.SetResolution(resolutions[index].width, resolutions[index].height, false);
+            }
+            else
+            {
+                Screen.SetResolution(resolutions[index].width, resolutions[index].height, true);
+            }
+        }
         SceneToSceneData.gameOptionsInit = true;
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+//controls the instructions ui that briefly pops up during the start of each level
 public class InstructionsPopup : MonoBehaviour
 {
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities;
+//used in the level gameplay scene to load in the level that was selected in the levelselect menu
 public class LevelLoader : MonoBehaviour
 {
     public SliderManager sliderManager;

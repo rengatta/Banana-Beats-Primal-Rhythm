@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//used for hold sliders
+//a prefab the shape of a slider will spawn with this script is attached
+//it will glow as you continue to hold the key on a hold slider and either fade brightly or black depending on if you suceed or fail the note
 public class StartGlowHolder : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;

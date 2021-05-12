@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 using Utilities;
 using System.IO;
 using UnityEngine.UI;
-
+//controls the logic in the level select menu
+//fills each level UI with the corresponding performance data
 public class LevelSelectLevel : MonoBehaviour
 {
     public TextMeshProUGUI songNameText;

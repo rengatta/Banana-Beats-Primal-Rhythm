@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//controls the audiosources for sounds that aren't background music
+//retrieves data from PlayerPrefs and adds a listener to the options menu when relevent settings are changed
 public class SoundEffectsAudioHolder : MonoBehaviour
 {
 

@@ -26,7 +26,7 @@ public interface SliderInterface
 
     bool hit { get; set; }
 }
-
+//controls all the logic for normal sliders, both left and right
 public class RegularSlider : MonoBehaviour, SliderInterface
 {
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//controls a black image that covers the entire scene screen
+//the image will start black and slowly increase in transparency
+//a unique coroutine may be passed in to trigger once the image is fully transparent
 public class FadeInOut : MonoBehaviour
 {
     public Image fadeoutImage;

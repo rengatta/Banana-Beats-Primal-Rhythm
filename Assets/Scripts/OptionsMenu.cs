@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
-
+//controls the option menu logic
+//retrieves and sets data for the options in PlayerPrefs
 public class OptionsMenu : MonoBehaviour
 {
     public Slider volumeSlider;
@@ -37,7 +38,8 @@ public class OptionsMenu : MonoBehaviour
         {
 
 
-            if (resolutionDropdown.options.Count == 0)
+            if (resolutionDropdown.options.Count == 0 && !Application.isEditor)
+            
             {
 
 

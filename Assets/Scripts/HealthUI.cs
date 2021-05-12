@@ -5,11 +5,12 @@ using UnityEngine.SceneManagement;
 using Utilities;
 using UnityEditor;
 using UnityEngine.UI;
+//controls the banana health points
+//health gain and miss decrease mechanics are controlled in Global.cs
 
 public class HealthUI : MonoBehaviour
 {
-    
-
+   
     public int maxHealth = 20;
     public int currentHealth = 20;
     public GameObject healthPartPrefab;
@@ -26,7 +27,7 @@ public class HealthUI : MonoBehaviour
     public FadeInOut fadeInOut;
 
 
-
+    //populates the screen with the correct bananas after health points gets changed
     public void ValidateFunction()
     {
 
