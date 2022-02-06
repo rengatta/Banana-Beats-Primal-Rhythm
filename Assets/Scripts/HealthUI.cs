@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-   
+
     public int maxHealth = 20;
     public int currentHealth = 20;
     public GameObject healthPartPrefab;
@@ -38,7 +38,7 @@ public class HealthUI : MonoBehaviour
 
             //UnityEditor.EditorApplication.delayCall += () =>
             //{
-                DestroyImmediate(child.gameObject);
+            DestroyImmediate(child.gameObject);
             //};
         }
 
@@ -83,21 +83,23 @@ public class HealthUI : MonoBehaviour
     }
 
 
-    public void GameOver() {
+    public void GameOver()
+    {
 
         GameState.failed = true;
         fadeInOut.FadeOut(GameOverCoroutine());
 
     }
 
-    public void ChangeHP(int change) {
+    public void ChangeHP(int change)
+    {
 
-        
         currentHealth += change;
         if (currentHealth > maxHealth) currentHealth = maxHealth;
-        if (currentHealth <= 0) {
+        if (currentHealth <= 0)
+        {
             GameOver();
-            
+
         }
         if (currentHealth < 0)
         {
@@ -107,7 +109,7 @@ public class HealthUI : MonoBehaviour
 
         foreach (Transform child in healthUIHolder.transform)
         {
-              Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
 
 
@@ -154,15 +156,10 @@ public class HealthUI : MonoBehaviour
     }
 
 
-
     void Start()
     {
         ChangeHP(0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

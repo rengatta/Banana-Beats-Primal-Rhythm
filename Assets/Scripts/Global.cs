@@ -8,7 +8,8 @@ using System.Linq;
 //probably a bad idea to put any more variables in global that doesn't correspond to specific data shared by scenes
 public static class GlobalHelper
 {
-    static GlobalHelper() {
+    static GlobalHelper()
+    {
         GameObject globalInstance = GameObject.Find("Global");
         _global = globalInstance.GetComponent<Global>();
     }
@@ -25,7 +26,8 @@ public static class GlobalHelper
     public static TextMeshProUGUI test;
     private static Global _global;
 
-    public static Global global {
+    public static Global global
+    {
         get
         {
             if (_global == null)
@@ -40,11 +42,12 @@ public static class GlobalHelper
 }
 
 
-public static class GameState {
+public static class GameState
+{
     public static bool paused = false;
     public static bool failed = false;
 
-  
+
     public static bool androidMode = false;
 
     public static List<Resolution> resolutions = new List<Resolution>();
@@ -54,21 +57,25 @@ public static class GameState {
         return Mathf.Abs(a - b) < epsilon;
     }
 
-    public static List<Resolution> GetResolutions() {
-        if(resolutions.Count != 0) {
+    public static List<Resolution> GetResolutions()
+    {
+        if (resolutions.Count != 0)
+        {
             return resolutions;
-        } else {
+        }
+        else
+        {
             resolutions = new List<Resolution>(Screen.resolutions);
 
             int currentRefreshRate = Screen.currentResolution.refreshRate;
-        
+
 
             resolutions.RemoveAll(item => item.refreshRate != currentRefreshRate);
-            
-            resolutions.RemoveAll(item => !Equality(((float)item.width / (float)item.height), (16.0f/9.0f), 0.001f));
+
+            resolutions.RemoveAll(item => !Equality(((float)item.width / (float)item.height), (16.0f / 9.0f), 0.001f));
 
             //resolutions.RemoveAll(item => item.refreshRate != 60 || item.refreshRate != 59);
-     
+
             resolutions.Reverse();
             return resolutions;
         }
@@ -77,13 +84,23 @@ public static class GameState {
 
 }
 
-public enum ClickDirection {
+public enum ClickDirection
+{
     right,
     left,
+    both,
     none
 }
 
-public static class ClickDetector {
+public static class Controls
+{
+    public const KeyCode LEFT_INPUT = KeyCode.A;
+    public const KeyCode RIGHT_INPUT = KeyCode.L;
+
+}
+
+public static class ClickDetector
+{
 
     public static ClickDirection GetClickDirection(bool mouseDown)
     {
@@ -107,13 +124,17 @@ public static class ClickDetector {
         }
         else
         {
-
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(Controls.LEFT_INPUT) && Input.GetKeyDown(Controls.RIGHT_INPUT))
+            {
+                SceneToSceneData.totalTries += 1;
+                return ClickDirection.both;
+            }
+            else if (Input.GetKeyDown(Controls.LEFT_INPUT))
             {
                 SceneToSceneData.totalTries += 1;
                 return ClickDirection.left;
             }
-            else if (Input.GetKeyDown(KeyCode.L))
+            else if (Input.GetKeyDown(Controls.RIGHT_INPUT))
             {
                 SceneToSceneData.totalTries += 1;
                 return ClickDirection.right;
@@ -123,17 +144,20 @@ public static class ClickDetector {
         return ClickDirection.none;
     }
 
-    public static bool GetClickUp(KeyCode key) {
+    public static bool GetClickUp(KeyCode key)
+    {
 
         bool isUp;
         if ((Application.platform == RuntimePlatform.Android || GameState.androidMode == true))
         {
             isUp = Input.GetMouseButtonUp(0);
-        } 
-        else {
+        }
+        else
+        {
             isUp = Input.GetKeyUp(key);
         }
-        if (isUp) {
+        if (isUp)
+        {
             SceneToSceneData.totalTries += 1;
         }
         return isUp;
@@ -164,7 +188,7 @@ public static class SceneToSceneData
 public class Global : MonoBehaviour
 {
 
-    
+
     public TextMeshProUGUI hitScoreText;
     public Smileys smileys;
     public ScoreManager scoreManager;
@@ -182,18 +206,20 @@ public class Global : MonoBehaviour
 
     float sameTimeDistance = 80f;
 
-    public void FailHit() {
+    public void FailHit()
+    {
         scoreManager.combo = 0;
 
         SpawnText("FAIL", Color.red + new Color(0.1f, 0.1f, 0.1f));
         whiteTriangle.ChangeColor(Color.red + new Color(0.1f, 0.1f, 0.1f));
         //hitScoreText.text = "FAIL";
         smileys.ActivateSmiley(Smiley.Angry);
-        if(whiteTriangle.healthUI != null && !inCharter)
-        whiteTriangle.healthUI.ChangeHP(-1);
+        if (whiteTriangle.healthUI != null && !inCharter)
+            whiteTriangle.healthUI.ChangeHP(-1);
 
     }
-    public void SpawnText(string text, Color color) {
+    public void SpawnText(string text, Color color)
+    {
         float newTime = GlobalHelper.global.audioSource.time;
         if (Mathf.Abs(newTime - hitScoreTime) < 0.05f)
         {
@@ -208,17 +234,20 @@ public class Global : MonoBehaviour
     }
     Color purple = new Color(75f / 255f, 0f / 255f, 130f / 255f);
 
-    public void SpawnGoodText() {
-        if (scoreManager.combo != 0 && scoreManager.combo % 10 ==0) {
+    public void SpawnGoodText()
+    {
+        if (scoreManager.combo != 0 && scoreManager.combo % 10 == 0)
+        {
             SpawnText("EXCELLENT", purple + new Color(0.1f, 0.1f, 0.1f));
             whiteTriangle.ChangeColor(purple + new Color(0.1f, 0.1f, 0.1f));
             whiteTriangle.healthUI.ChangeHP(1);
         }
         SpawnText("GOOD", Color.green + new Color(0.1f, 0.1f, 0.1f));
-       whiteTriangle.ChangeColor(Color.green + new Color(0.1f, 0.1f, 0.1f));
+        whiteTriangle.ChangeColor(Color.green + new Color(0.1f, 0.1f, 0.1f));
     }
 
-    public void SpawnPerfectText() {
+    public void SpawnPerfectText()
+    {
         if (scoreManager.combo != 0 && scoreManager.combo % 7 == 0)
         {
             SpawnText("EXCELLENT", purple + new Color(0.1f, 0.1f, 0.1f));
@@ -229,17 +258,20 @@ public class Global : MonoBehaviour
         SpawnText("PERFECT", Color.cyan + new Color(0.1f, 0.1f, 0.1f));
         whiteTriangle.ChangeColor(Color.cyan + new Color(0.1f, 0.1f, 0.1f));
     }
-    public void SpawnMissText() {
+    public void SpawnMissText()
+    {
         SpawnText("MISS", Color.yellow + new Color(0.1f, 0.1f, 0.1f));
         whiteTriangle.ChangeColor(Color.yellow + new Color(0.1f, 0.1f, 0.1f));
     }
 
     int missHitCounter = 0;
-    public void MissHit() {
+    public void MissHit()
+    {
         scoreManager.combo = 0;
         scoreManager.score -= 10;
         missHitCounter++;
-        if(missHitCounter >= 3) {
+        if (missHitCounter >= 3)
+        {
             missHitCounter = 0;
             if (whiteTriangle.healthUI != null && !inCharter)
                 whiteTriangle.healthUI.ChangeHP(-1);

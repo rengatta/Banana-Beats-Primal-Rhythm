@@ -37,8 +37,10 @@ public class RecordManager : MonoBehaviour
         levelText.text = "";
     }
 
-    public void PlayTestButtonClicked() {
-        if(isPlayTesting) {
+    public void PlayTestButtonClicked()
+    {
+        if (isPlayTesting)
+        {
             StopAllCoroutines();
             editNotes.ToggleLines();
             isPlayTesting = false;
@@ -53,7 +55,9 @@ public class RecordManager : MonoBehaviour
             sliderManager.DestroyActiveSliders();
             Camera.main.orthographicSize = tempCameraSize;
 
-        } else {
+        }
+        else
+        {
             tempCameraSize = Camera.main.orthographicSize;
             Camera.main.orthographicSize = 5f;
             editNotes.ToggleLines();
@@ -68,11 +72,12 @@ public class RecordManager : MonoBehaviour
             GlobalHelper.global.audioSource.Stop();
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
             StartCoroutine(PreTimeWait());
-            
+
         }
     }
 
-    IEnumerator PreTimeWait() {
+    IEnumerator PreTimeWait()
+    {
         yield return new WaitForSeconds(3.0f);
         GlobalHelper.global.audioSource.Stop();
         GlobalHelper.global.audioSource.time = 0.0f;
@@ -115,7 +120,7 @@ public class RecordManager : MonoBehaviour
             GlobalHelper.global.audioSource.clip = GlobalHelper.global.currentAudioClip;
             //GlobalHelper.global.audioSource.Stop();
             GlobalHelper.global.audioSource.time = songDurationSlider.value;
-           
+
             GlobalHelper.global.audioSource.Play();
 
         }
@@ -124,7 +129,8 @@ public class RecordManager : MonoBehaviour
 
 
 
-    public void LoadSong() {
+    public void LoadSong()
+    {
         string path = EditorUtility.OpenFilePanel("Select an mp3 file", Application.dataPath + "\\Resources\\Audio\\", "mp3");
 
         if (path.Length != 0)
@@ -138,10 +144,12 @@ public class RecordManager : MonoBehaviour
 
     }
 
-    public void LoadLevel() {
+    public void LoadLevel()
+    {
         string path = EditorUtility.OpenFilePanel("Select a level file", Application.dataPath + "\\Resources\\LevelSaves\\", "txt");
 
-        if (path.Length == 0) {
+        if (path.Length == 0)
+        {
             Debug.Log("File failed to load.");
             return;
         }
@@ -149,14 +157,16 @@ public class RecordManager : MonoBehaviour
         if (!File.Exists(path))
         {
             Debug.Log("FILE DOES NOT EXIST.");
-        } else {
+        }
+        else
+        {
             string readText = File.ReadAllText(path);
 
             GlobalHelper.global.currentLevel = JsonUtility.FromJson<LevelData>(readText);
 
             levelText.text = "Current Level: " + GlobalHelper.global.currentLevel.levelName;
 
-                
+
             GlobalHelper.global.currentAudioClip = Resources.Load<AudioClip>("Audio\\" + GlobalHelper.global.currentLevel.audioClipName);
             songNameText.text = GlobalHelper.global.currentLevel.audioClipName;
 
@@ -169,7 +179,8 @@ public class RecordManager : MonoBehaviour
 
     }
 
-    public void SaveEdit() {
+    public void SaveEdit()
+    {
         GlobalHelper.global.currentLevel.ClearData();
         float speed = (float)GlobalHelper.global.currentLevel.sliderSpeed;
 
@@ -182,7 +193,9 @@ public class RecordManager : MonoBehaviour
             {
                 GlobalHelper.global.currentLevel.AddSlider(LevelSliderType.LeftSlider, editorSlider.transform.position.x / speed);
 
-            } else if(editorHoldSlider != null) {
+            }
+            else if (editorHoldSlider != null)
+            {
                 int index = GlobalHelper.global.currentLevel.AddSlider(LevelSliderType.LeftHoldSlider, editorHoldSlider.start.transform.position.x / speed); ;
                 GlobalHelper.global.currentLevel.AddHoldSliderEnd(index, (editorHoldSlider.start.transform.position.x / speed) + editorHoldSlider.length);
 
@@ -209,10 +222,11 @@ public class RecordManager : MonoBehaviour
         }
     }
 
-    public void SaveLevel() {
+    public void SaveLevel()
+    {
 
         string path = EditorUtility.SaveFilePanel("Select a filename to save", Application.dataPath + "\\Resources\\LevelSaves\\", GlobalHelper.global.currentLevel.levelName, "txt");
-        string levelname =  Path.GetFileNameWithoutExtension(path);
+        string levelname = Path.GetFileNameWithoutExtension(path);
 
         if (path.Length == 0)
         {
@@ -232,8 +246,10 @@ public class RecordManager : MonoBehaviour
         recordFeedbackText2.text = System.DateTime.Now.ToString();
     }
 
-    public void QuickSave() {
-        if(currentSavePath != "") {
+    public void QuickSave()
+    {
+        if (currentSavePath != "")
+        {
 
             SaveEdit();
 
@@ -242,17 +258,23 @@ public class RecordManager : MonoBehaviour
             File.WriteAllText(currentSavePath, json);
             recordFeedbackText.text = "Quicksaved to " + currentSavePath;
             recordFeedbackText2.text = System.DateTime.Now.ToString();
-        } else {
+        }
+        else
+        {
             SaveLevel();
         }
 
     }
 
-    public void RecordButtonClicked() {
-        if(recording) {
+    public void RecordButtonClicked()
+    {
+        if (recording)
+        {
             recording = false;
             recordIcon.SetActive(false);
-        } else {
+        }
+        else
+        {
             recording = true;
             recordIcon.SetActive(true);
         }
@@ -266,12 +288,12 @@ public class RecordManager : MonoBehaviour
         if (recording && audioManager.songStarted)
         {
 
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(Controls.LEFT_INPUT))
             {
                 recordFeedbackText.text = "Left: " + songDurationSlider.value.ToString();
                 editNotes.GenerateLeftNote(songDurationSlider.value * (float)GlobalHelper.global.currentLevel.sliderSpeed);
             }
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(Controls.RIGHT_INPUT))
             {
                 recordFeedbackText2.text = "Right: " + songDurationSlider.value.ToString();
                 editNotes.GenerateRightNote(songDurationSlider.value * (float)GlobalHelper.global.currentLevel.sliderSpeed);
@@ -292,7 +314,7 @@ public class RecordManager : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Q) && holdLeft)
             {
                 holdLeft = false;
-                float length = songDurationSlider.value -holdLeftStart;
+                float length = songDurationSlider.value - holdLeftStart;
                 editNotes.GenerateLeftHoldNote(holdLeftStart * (float)GlobalHelper.global.currentLevel.sliderSpeed, length * (float)GlobalHelper.global.currentLevel.sliderSpeed);
                 recordFeedbackText.text = "Hold left end: " + songDurationSlider.value.ToString();
             }

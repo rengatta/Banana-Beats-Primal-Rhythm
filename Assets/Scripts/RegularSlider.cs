@@ -47,7 +47,8 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     public bool hit { get; set; } = false;
     public GameObject hitScoreTextPrefab;
 
-    public void Darken() {
+    public void Darken()
+    {
         Color tempColor = Color.black;
         tempColor.a = 0.4f;
         spriteRenderer.color = tempColor;
@@ -56,14 +57,16 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     float glowDuration = 0.05f;
     float fadeSpeed = 15f;
     float intensity = 4.5f;
-    IEnumerator GlowFadeOut() {
+    IEnumerator GlowFadeOut()
+    {
 
         spriteRenderer.material.SetFloat("_Intensity", intensity);
 
         //gameObject.GetComponent<Renderer>().sharedMaterial.SetFloat("_YourParameter", someValue);
         yield return new WaitForSeconds(glowDuration);
 
-        while(spriteRenderer.color.a > 0f) {
+        while (spriteRenderer.color.a > 0f)
+        {
             spriteRenderer.color -= new Color(0f, 0f, 0f, fadeSpeed * Time.deltaTime);
             intensity -= fadeSpeed * Time.deltaTime;
             if (intensity <= 0f) intensity = 0f;
@@ -76,26 +79,31 @@ public class RegularSlider : MonoBehaviour, SliderInterface
     }
 
 
-    void HitDetected() {
+    void HitDetected()
+    {
         hit = true;
         StartCoroutine(GlowFadeOut());
     }
 
-    public void DetectHit(ClickDirection clickDirection) {
+    public void DetectHit(ClickDirection clickDirection)
+    {
 
         //code runs if not on android
-        if (!GameState.paused && !hit) {
+        if (!GameState.paused && !hit)
+        {
 
-            if (sliderType == SliderType.RightSlider && clickDirection == ClickDirection.right)
+            if (sliderType == SliderType.RightSlider && (clickDirection == ClickDirection.right || clickDirection == ClickDirection.both))
                 SliderReceived();
-            else if (sliderType == SliderType.LeftSlider && clickDirection == ClickDirection.left)
+            else if (sliderType == SliderType.LeftSlider && (clickDirection == ClickDirection.left || clickDirection == ClickDirection.both))
                 SliderReceived();
         }
 
     }
 
-    void SliderReceived() {
-        if (hitScore == HitScore.Perfect) {
+    void SliderReceived()
+    {
+        if (hitScore == HitScore.Perfect)
+        {
             GlobalHelper.global.scoreManager.totalHits += 1;
             GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore * SceneToSceneData.perfectMultiplier;
 
@@ -105,7 +113,8 @@ public class RegularSlider : MonoBehaviour, SliderInterface
 
             GlobalHelper.global.smileys.ActivateSmiley(Smiley.Happy);
         }
-        else if (hitScore == HitScore.Good) {
+        else if (hitScore == HitScore.Good)
+        {
             GlobalHelper.global.scoreManager.totalHits += 1;
             GlobalHelper.global.scoreManager.score += SceneToSceneData.sliderScore;
             GlobalHelper.global.scoreManager.combo += 1;
@@ -118,12 +127,14 @@ public class RegularSlider : MonoBehaviour, SliderInterface
         HitDetected();
     }
 
-    void Start() {
+    void Start()
+    {
         StartCoroutine(UpdateWithSongTime());
         spriteRenderer.color += new Color(0.05f, 0.05f, 0.05f);
     }
 
-    IEnumerator UpdateWithSongTime() {
+    IEnumerator UpdateWithSongTime()
+    {
 
         double previousDsp = AudioSettings.dspTime;
         double audioDelta;
@@ -137,12 +148,15 @@ public class RegularSlider : MonoBehaviour, SliderInterface
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer) {
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == GlobalHelper.perfectRegionLayer)
+        {
 
             hitScore = HitScore.Perfect;
         }
-        else if (collision.gameObject.layer == GlobalHelper.goodRegionLayer) {
+        else if (collision.gameObject.layer == GlobalHelper.goodRegionLayer)
+        {
 
             hitScore = HitScore.Good;
 
